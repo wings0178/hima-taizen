@@ -3,6 +3,7 @@ const gameRegistry = {
   'dino': new DinoGameScene(),
   'tetris': new TetrisGameScene(),
   '100masu': new HyakumasuGameScene(),
+  'reversi': new ReversiGameScene(),
 };
 
 const listEl = document.getElementById('game-list');
