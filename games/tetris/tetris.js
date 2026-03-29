@@ -29,6 +29,10 @@ class TetrisGameScene extends GameScene {
     this.lastTouchY = 0;
     this.touchStartTime = 0;
     this.isSwiping = false;
+    this.touchAxis = null; // スワイプの軸固定用
+
+    // タッチイベントを画面全体で拾うためのターゲット
+    this.touchTarget = document.getElementById('main-content');
 
     this.PIECES = [
       null,
@@ -51,7 +55,7 @@ class TetrisGameScene extends GameScene {
       【Space】ハードドロップ 【Shift / C】ホールド<br>
       【P / Esc】ポーズ<br>
       <span style="color:var(--accent-color);font-size:0.9rem;">
-      ※スマホ操作<br>
+      ※スマホ操作（画面下の空きスペースでも操作可能）<br>
       タップ：回転<br>
       左右にドラッグ：移動<br>
       下フリック：一気に落下<br>
@@ -79,9 +83,10 @@ class TetrisGameScene extends GameScene {
     this.isGameOver = false;
 
     window.addEventListener('keydown', this.keydownHandler);
-    canvas.addEventListener('touchstart', this.touchStartHandler, {passive: false});
-    canvas.addEventListener('touchmove', this.touchMoveHandler, {passive: false});
-    canvas.addEventListener('touchend', this.touchEndHandler, {passive: false});
+    // キャンバスではなくメインコンテンツ全体にイベントを貼る
+    this.touchTarget.addEventListener('touchstart', this.touchStartHandler, {passive: false});
+    this.touchTarget.addEventListener('touchmove', this.touchMoveHandler, {passive: false});
+    this.touchTarget.addEventListener('touchend', this.touchEndHandler, {passive: false});
 
     this.spawnPiece();
     this.lastTime = performance.now();
@@ -112,9 +117,9 @@ class TetrisGameScene extends GameScene {
 
   removeListeners() { 
     window.removeEventListener('keydown', this.keydownHandler);
-    canvas.removeEventListener('touchstart', this.touchStartHandler);
-    canvas.removeEventListener('touchmove', this.touchMoveHandler);
-    canvas.removeEventListener('touchend', this.touchEndHandler);
+    this.touchTarget.removeEventListener('touchstart', this.touchStartHandler);
+    this.touchTarget.removeEventListener('touchmove', this.touchMoveHandler);
+    this.touchTarget.removeEventListener('touchend', this.touchEndHandler);
   }
 
   drawFromBag() {
@@ -269,33 +274,49 @@ class TetrisGameScene extends GameScene {
   handleTouchStart(e) {
     if (!this.isActive || this.isGameOver) return;
     
+    const clientX = e.touches[0].clientX;
+    const clientY = e.touches[0].clientY;
     const rect = canvas.getBoundingClientRect();
-    const touchX = (e.touches[0].clientX - rect.left) * (canvas.width / rect.width);
-    const touchY = (e.touches[0].clientY - rect.top) * (canvas.height / rect.height);
-    
-    // ポーズボタン領域
-    if (touchX > canvas.width - 50 && touchY < 50) {
-      this.togglePause();
-      e.preventDefault();
-      return;
-    }
 
-    if (this.isPaused) {
-      if (touchX > canvas.width/2 - 60 && touchX < canvas.width/2 + 60 && touchY > canvas.height/2 + 20 && touchY < canvas.height/2 + 60) {
-        this.quitGame();
-      } else {
+    // キャンバス内をタップしたかどうかの判定
+    if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
+      const touchX = (clientX - rect.left) * (canvas.width / rect.width);
+      const touchY = (clientY - rect.top) * (canvas.height / rect.height);
+      
+      // ポーズボタン領域
+      if (touchX > canvas.width - 50 && touchY < 50) {
         this.togglePause();
+        e.preventDefault();
+        return;
       }
-      e.preventDefault();
-      return;
+
+      if (this.isPaused) {
+        if (touchX > canvas.width/2 - 60 && touchX < canvas.width/2 + 60 && touchY > canvas.height/2 + 20 && touchY < canvas.height/2 + 60) {
+          this.quitGame();
+        } else {
+          this.togglePause();
+        }
+        e.preventDefault();
+        return;
+      }
+    } else {
+      // キャンバス外をタップして、かつポーズ中の場合は再開
+      if (this.isPaused) {
+        this.togglePause();
+        e.preventDefault();
+        return;
+      }
     }
 
-    this.touchStartX = e.touches[0].clientX;
-    this.touchStartY = e.touches[0].clientY;
+    if (this.isPaused) return;
+
+    this.touchStartX = clientX;
+    this.touchStartY = clientY;
     this.lastTouchX = this.touchStartX;
     this.lastTouchY = this.touchStartY;
     this.touchStartTime = Date.now();
     this.isSwiping = false;
+    this.touchAxis = null; // 新たにタッチした時は軸をリセット
   }
 
   handleTouchMove(e) {
@@ -306,26 +327,34 @@ class TetrisGameScene extends GameScene {
     const currentY = e.touches[0].clientY;
     const dx = currentX - this.lastTouchX;
     const dy = currentY - this.lastTouchY;
+    const totalDx = currentX - this.touchStartX;
+    const totalDy = currentY - this.touchStartY;
 
-    // スワイプの感度調整（ピクセル）
+    // 動き始めに、横スワイプか縦フリックかを判断して軸を固定する
+    if (this.touchAxis === null && (Math.abs(totalDx) > 10 || Math.abs(totalDy) > 10)) {
+      this.touchAxis = Math.abs(totalDy) > Math.abs(totalDx) ? 'y' : 'x';
+    }
+
     const sensitivityX = 25; 
     const sensitivityY = 35; 
 
-    if (Math.abs(currentX - this.touchStartX) > 10 || Math.abs(currentY - this.touchStartY) > 10) {
+    if (Math.abs(totalDx) > 10 || Math.abs(totalDy) > 10) {
       this.isSwiping = true;
     }
 
-    // 左右へのドラッグ移動
-    if (dx > sensitivityX) {
-      if (!this.collide(this.piece.x + 1, this.piece.y)) this.piece.x++;
-      this.lastTouchX = currentX;
-    } else if (dx < -sensitivityX) {
-      if (!this.collide(this.piece.x - 1, this.piece.y)) this.piece.x--;
-      this.lastTouchX = currentX;
+    // 縦フリックと判定された場合は、横方向の移動を完全に無視する（誤爆防止）
+    if (this.touchAxis !== 'y') {
+      if (dx > sensitivityX) {
+        if (!this.collide(this.piece.x + 1, this.piece.y)) this.piece.x++;
+        this.lastTouchX = currentX;
+      } else if (dx < -sensitivityX) {
+        if (!this.collide(this.piece.x - 1, this.piece.y)) this.piece.x--;
+        this.lastTouchX = currentX;
+      }
     }
 
     // 下へのゆっくりなドラッグはソフトドロップ
-    if (dy > sensitivityY) {
+    if (this.touchAxis === 'y' && dy > sensitivityY) {
       if (!this.collide(this.piece.x, this.piece.y + 1)) {
         this.piece.y++;
         this.score += 1; 
@@ -345,10 +374,10 @@ class TetrisGameScene extends GameScene {
     const totalDy = touchEndY - this.touchStartY;
 
     if (!this.isSwiping && duration < 300) {
-      // 動かさずにすぐ離した場合はタップと判定して回転させる
+      // ほとんど動かさずに指を離した場合は「タップ（回転）」
       this.rotate();
     } else if (duration < 300) {
-      // 短時間で大きく動かした場合はフリック判定
+      // 短時間で大きく動かした場合は「フリック」
       if (Math.abs(totalDy) > Math.abs(totalDx) && Math.abs(totalDy) > 40) {
         if (totalDy > 0) {
           this.hardDrop(); 
@@ -445,7 +474,7 @@ class TetrisGameScene extends GameScene {
       ctx.fillText('タイトルへ戻る', canvas.width / 2, canvas.height / 2 + 45);
       
       ctx.font = '12px Arial'; ctx.fillStyle = '#ccc';
-      ctx.fillText('※それ以外の場所をタップで再開', canvas.width / 2, canvas.height / 2 + 85);
+      ctx.fillText('※画面のどこかをタップで再開', canvas.width / 2, canvas.height / 2 + 85);
     }
   }
 }
