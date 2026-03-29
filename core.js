@@ -19,7 +19,7 @@ class GameScene {
     
     if (this.name === '恐竜ランナー') {
       dpad.style.display = 'none'; action.style.display = 'flex'; numpad.style.display = 'none';
-    } else if (this.name === 'シンプルテトリス') {
+    } else if (this.name === 'テトリス') {
       dpad.style.display = 'flex'; action.style.display = 'none'; numpad.style.display = 'none';
     } else if (this.name === '百ます計算') {
       dpad.style.display = 'flex'; action.style.display = 'none'; numpad.style.display = 'flex';
