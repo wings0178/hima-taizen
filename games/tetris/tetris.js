@@ -22,16 +22,14 @@ class TetrisGameScene extends GameScene {
     this.touchMoveHandler = (e) => this.handleTouchMove(e);
     this.touchEndHandler = (e) => this.handleTouchEnd(e);
 
-    // スマホスワイプ操作用の変数
     this.touchStartX = 0;
     this.touchStartY = 0;
     this.lastTouchX = 0;
     this.lastTouchY = 0;
     this.touchStartTime = 0;
     this.isSwiping = false;
-    this.touchAxis = null; // スワイプの軸固定用
+    this.touchAxis = null; 
 
-    // タッチイベントを画面全体で拾うためのターゲット
     this.touchTarget = document.getElementById('main-content');
 
     this.PIECES = [
@@ -73,7 +71,8 @@ class TetrisGameScene extends GameScene {
     canvas.width = (this.cols + 8) * this.blockSize; 
     canvas.height = this.rows * this.blockSize;
     this.board = Array.from({length: this.rows}, () => Array(this.cols).fill(0));
-    this.score = 0; this.dropInterval = 1000;
+    this.score = 0; 
+    this.dropInterval = 1000; // 常に1秒間隔で落下
     this.bag = [];
     this.holdPieceIndex = null;
     this.nextPieceIndex = this.drawFromBag();
@@ -83,7 +82,6 @@ class TetrisGameScene extends GameScene {
     this.isGameOver = false;
 
     window.addEventListener('keydown', this.keydownHandler);
-    // キャンバスではなくメインコンテンツ全体にイベントを貼る
     this.touchTarget.addEventListener('touchstart', this.touchStartHandler, {passive: false});
     this.touchTarget.addEventListener('touchmove', this.touchMoveHandler, {passive: false});
     this.touchTarget.addEventListener('touchend', this.touchEndHandler, {passive: false});
@@ -229,7 +227,7 @@ class TetrisGameScene extends GameScene {
     }
     if(linesCleared > 0) {
       this.score += [0, 10, 30, 60, 100][linesCleared];
-      this.dropInterval = Math.max(100, 1000 - this.score * 2);
+      // スピードアップ処理を削除。常に同じ速度を維持。
     }
   }
 
@@ -278,12 +276,10 @@ class TetrisGameScene extends GameScene {
     const clientY = e.touches[0].clientY;
     const rect = canvas.getBoundingClientRect();
 
-    // キャンバス内をタップしたかどうかの判定
     if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
       const touchX = (clientX - rect.left) * (canvas.width / rect.width);
       const touchY = (clientY - rect.top) * (canvas.height / rect.height);
       
-      // ポーズボタン領域
       if (touchX > canvas.width - 50 && touchY < 50) {
         this.togglePause();
         e.preventDefault();
@@ -300,7 +296,6 @@ class TetrisGameScene extends GameScene {
         return;
       }
     } else {
-      // キャンバス外をタップして、かつポーズ中の場合は再開
       if (this.isPaused) {
         this.togglePause();
         e.preventDefault();
@@ -316,7 +311,7 @@ class TetrisGameScene extends GameScene {
     this.lastTouchY = this.touchStartY;
     this.touchStartTime = Date.now();
     this.isSwiping = false;
-    this.touchAxis = null; // 新たにタッチした時は軸をリセット
+    this.touchAxis = null; 
   }
 
   handleTouchMove(e) {
@@ -330,7 +325,6 @@ class TetrisGameScene extends GameScene {
     const totalDx = currentX - this.touchStartX;
     const totalDy = currentY - this.touchStartY;
 
-    // 動き始めに、横スワイプか縦フリックかを判断して軸を固定する
     if (this.touchAxis === null && (Math.abs(totalDx) > 10 || Math.abs(totalDy) > 10)) {
       this.touchAxis = Math.abs(totalDy) > Math.abs(totalDx) ? 'y' : 'x';
     }
@@ -342,7 +336,6 @@ class TetrisGameScene extends GameScene {
       this.isSwiping = true;
     }
 
-    // 縦フリックと判定された場合は、横方向の移動を完全に無視する（誤爆防止）
     if (this.touchAxis !== 'y') {
       if (dx > sensitivityX) {
         if (!this.collide(this.piece.x + 1, this.piece.y)) this.piece.x++;
@@ -353,7 +346,6 @@ class TetrisGameScene extends GameScene {
       }
     }
 
-    // 下へのゆっくりなドラッグはソフトドロップ
     if (this.touchAxis === 'y' && dy > sensitivityY) {
       if (!this.collide(this.piece.x, this.piece.y + 1)) {
         this.piece.y++;
@@ -374,10 +366,8 @@ class TetrisGameScene extends GameScene {
     const totalDy = touchEndY - this.touchStartY;
 
     if (!this.isSwiping && duration < 300) {
-      // ほとんど動かさずに指を離した場合は「タップ（回転）」
       this.rotate();
     } else if (duration < 300) {
-      // 短時間で大きく動かした場合は「フリック」
       if (Math.abs(totalDy) > Math.abs(totalDx) && Math.abs(totalDy) > 40) {
         if (totalDy > 0) {
           this.hardDrop(); 
