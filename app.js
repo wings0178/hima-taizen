@@ -142,7 +142,13 @@ function nextShortsGame() {
     exitShortsMode();
     return;
   }
-  
+
+  // ★修正：ショートUIを表示し、フェードアウトクラスをリセット
+  if (shortsUI) {
+    shortsUI.style.display = 'flex';
+    shortsUI.classList.remove('fade-out');
+  }
+
   if (curtain) {
     curtain.classList.remove('slide-out', 'no-transition');
     curtain.classList.add('slide-in');
@@ -153,7 +159,6 @@ function nextShortsGame() {
     
     let nextKey = availableGames[Math.floor(Math.random() * availableGames.length)];
     
-    // 同じゲームが連続しないようにする配慮
     if (availableGames.length > 1 && currentScene && gameRegistry[nextKey] === currentScene) {
        let filtered = availableGames.filter(k => gameRegistry[k] !== currentScene);
        nextKey = filtered[Math.floor(Math.random() * filtered.length)];
@@ -170,6 +175,18 @@ function nextShortsGame() {
         curtain.classList.add('no-transition');
         curtain.classList.remove('slide-out');
         isCurtainMoving = false;
+        
+        // ★追加：ゲーム開始から3秒後にUIをフェードアウトさせる
+        if (shortsUI) {
+          shortsUI.classList.add('fade-out');
+          // フェードアウト完了後に完全に非表示にする（タッチイベント干渉防止）
+          setTimeout(() => {
+            if (shortsUI.classList.contains('fade-out')) {
+              shortsUI.style.display = 'none';
+            }
+          }, 500); // CSSのtransition時間と同じ
+        }
+
       }, 350);
     } else {
       isCurtainMoving = false;
