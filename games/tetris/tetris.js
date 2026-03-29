@@ -1,6 +1,6 @@
 class TetrisGameScene extends GameScene {
   constructor() {
-    super('本格テトリス');
+    super('テトリス');
     this.cols = 10; this.rows = 20; this.blockSize = 25;
     // UI表示用にCanvas幅を広げるためのオフセット（左に4マス、右に4マスの余白）
     this.boardOffset = 4; 
