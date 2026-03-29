@@ -31,18 +31,16 @@ h1 {
   position: relative; padding: 20px; flex-direction: column; overflow: hidden;
 }
 canvas {
-  background-color: #000; border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: none;
-  /* ↓この4行が、アスペクト比を保ちつつ自動で大画面化する魔法よ */
-  width: 100%; 
-  height: 85vh; 
-  max-width: 1200px; 
-  object-fit: contain; 
+  background-color: #000;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  display: none;
+  /* 画面の縮小バグを永久に防ぐための究極の指定 */
+  width: 100%;
+  height: 100%;
+  max-height: 85vh; /* PC用基本サイズ。スマホ時はJSで上書きされる */
+  object-fit: contain;
   touch-action: none;
-  max-width: 100%; 
-  max-height: 100%;
-  height: auto; touch-action: none; 
-  object-fit: contain; /* ← これを必ず追加しなさい */
 }
 .ui-panel {
   position: absolute; background-color: rgba(10, 10, 20, 0.95);
@@ -111,38 +109,43 @@ canvas {
 #swipe-curtain.slide-out { transform: translateY(-100%); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
 #swipe-curtain.no-transition { transition: none; }
 
-/* 変更後（これに書き換える） */
+/* ======== 新機能：ショートモード用カーテン & UI ======== */
+#swipe-curtain {
+  position: absolute; inset: 0; background: #0a0a14; z-index: 150;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent-color); font-size: 2rem; font-weight: bold; letter-spacing: 2px;
+  transform: translateY(100%);
+}
+#swipe-curtain.slide-in { transform: translateY(0); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+#swipe-curtain.slide-out { transform: translateY(-100%); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+#swipe-curtain.no-transition { transition: none; }
+
+/* ショートモード起動時にメインコンテンツ全体を上に押し上げる */
+body.shorts-active #main-content {
+  padding-bottom: 60px;
+}
+
+/* 画面最下部60pxのスワイプ専用聖域 */
 #shorts-ui {
   display: none; position: absolute; bottom: 0; left: 0; 
-  width: 100%; 
-  height: 15vh; /* 画面最下部15%に縮小 */
-  z-index: 140; pointer-events: auto; touch-action: none;
-  background: linear-gradient(to top, rgba(255, 71, 87, 0.7), transparent); /* 半透明グラデーション */
-  color: white; font-weight: bold; font-size: 1.2rem;
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-  padding-bottom: 20px;
-  box-sizing: border-box;
-  opacity: 1;
-  transition: opacity 0.5s ease-out; /* フェードアウトアニメーション */
+  width: 100%; height: 60px; 
+  z-index: 200; pointer-events: auto; touch-action: none;
+  background: rgba(255, 255, 255, 0.05); /* うっすら見えるエリア */
+  border-top: 1px solid rgba(255,255,255,0.1);
+  align-items: center; justify-content: center;
 }
 
-/* フェードアウト用のクラス */
-#shorts-ui.fade-out {
+body.shorts-active #shorts-ui {
+  display: flex;
+}
+
+/* 一瞬出て消えるテキスト */
+#shorts-ui-text {
+  background: rgba(255, 71, 87, 0.8); color: white;
+  padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;
+  opacity: 1; transition: opacity 0.5s ease;
+}
+
+#shorts-ui-text.fade-out {
   opacity: 0;
-  pointer-events: none; /* 消えたらタッチを無効化 */
-}
-
-/* 矢印アニメーション */
-#shorts-ui .arrow {
-  width: 0; height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 15px solid white;
-  margin-top: 10px;
-  animation: arrowBounce 1s infinite;
-}
-
-@keyframes arrowBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
 }

@@ -120,7 +120,7 @@ if (btnShorts) {
   btnShorts.onclick = () => {
     if (isShortsMode) return;
     isShortsMode = true;
-    if (shortsUI) shortsUI.style.display = 'block';
+    document.body.classList.add('shorts-active'); // これでUI表示とエリア確保が自動で行われるわ
     document.querySelectorAll('.game-item').forEach(el => el.classList.remove('active'));
     nextShortsGame();
   };
@@ -128,7 +128,7 @@ if (btnShorts) {
 
 function exitShortsMode() {
   isShortsMode = false;
-  if (shortsUI) shortsUI.style.display = 'none';
+  document.body.classList.remove('shorts-active');
 }
 
 function nextShortsGame() {
@@ -143,11 +143,8 @@ function nextShortsGame() {
     return;
   }
 
-  // ★修正：ショートUIを表示し、フェードアウトクラスをリセット
-  if (shortsUI) {
-    shortsUI.style.display = 'flex';
-    shortsUI.classList.remove('fade-out');
-  }
+  const shortsText = document.getElementById('shorts-ui-text');
+  if (shortsText) shortsText.classList.remove('fade-out');
 
   if (curtain) {
     curtain.classList.remove('slide-out', 'no-transition');
@@ -176,17 +173,8 @@ function nextShortsGame() {
         curtain.classList.remove('slide-out');
         isCurtainMoving = false;
         
-        // ★追加：ゲーム開始から3秒後にUIをフェードアウトさせる
-        if (shortsUI) {
-          shortsUI.classList.add('fade-out');
-          // フェードアウト完了後に完全に非表示にする（タッチイベント干渉防止）
-          setTimeout(() => {
-            if (shortsUI.classList.contains('fade-out')) {
-              shortsUI.style.display = 'none';
-            }
-          }, 500); // CSSのtransition時間と同じ
-        }
-
+        // テキストだけをフェードアウトさせる（スワイプエリア自体は残る）
+        if (shortsText) shortsText.classList.add('fade-out');
       }, 350);
     } else {
       isCurtainMoving = false;
@@ -232,3 +220,24 @@ if (firstAvailable) {
    // ゲームが1つも読み込めなかった場合のエラー表示
    if (listEl) listEl.innerHTML = '<li style="padding:15px; color:#ff4757;">ゲームの読み込みに失敗しました。コードを確認してください。</li>';
 }
+
+hideUI() {
+    if (uiPanel) uiPanel.style.display = 'none';
+    if (canvas) canvas.style.display = 'block';
+    this.updateMobileUI();
+
+    // --- キャンバスの完全初期化（解像度汚染対策） ---
+    if (canvas && ctx) {
+      // 汎用的なデフォルト解像度を強制セット（古いゲームは各自の startGame でこれを上書きするから問題なし）
+      canvas.width = 800;
+      canvas.height = 600;
+      
+      // 前のゲームが残したコンテキストの変形（スケールや回転等）を完全にリセット
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.globalAlpha = 1.0;
+      ctx.shadowBlur = 0;
+    }
+
+    const vc = document.getElementById('virtual-controls');
+    if (vc) vc.classList.add('playing');
+  }
