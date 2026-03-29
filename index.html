@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>暇つぶしゲーム大全 v6.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="sidebar">
+  <h1>暇つぶし大全</h1>
+  
+  <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center;">
+    <button class="ui-btn btn-primary" id="btn-shorts" style="padding: 10px; font-size: 0.9rem;">📱 ショート</button>
+    <button class="ui-btn btn-secondary" id="btn-options" style="padding: 10px; font-size: 0.9rem;">⚙️ オプション</button>
+  </div>
+  
+  <ul class="game-list" id="game-list"></ul>
+</div>
+
+<div id="main-content">
+  <canvas id="game-canvas"></canvas>
+  <div id="ui-panel" class="ui-panel">
+    <div id="ui-content"></div>
+  </div>
+  
+  <div id="virtual-controls">
+    <div id="v-dpad" class="v-section">
+      <button class="v-btn" data-key="ArrowUp" data-code="ArrowUp">↑</button>
+      <div class="h-row">
+        <button class="v-btn" data-key="ArrowLeft" data-code="ArrowLeft">←</button>
+        <button class="v-btn" data-key="ArrowDown" data-code="ArrowDown">↓</button>
+        <button class="v-btn" data-key="ArrowRight" data-code="ArrowRight">→</button>
+      </div>
+    </div>
+    
+    <div id="v-action" class="v-section">
+      <button class="v-btn round" data-key=" " data-code="Space">JUMP</button>
+    </div>
+    
+    <div id="v-numpad" class="v-section">
+      <div class="num-grid">
+        <button class="v-btn" data-key="7" data-code="Digit7">7</button>
+        <button class="v-btn" data-key="8" data-code="Digit8">8</button>
+        <button class="v-btn" data-key="9" data-code="Digit9">9</button>
+        <button class="v-btn" data-key="4" data-code="Digit4">4</button>
+        <button class="v-btn" data-key="5" data-code="Digit5">5</button>
+        <button class="v-btn" data-key="6" data-code="Digit6">6</button>
+        <button class="v-btn" data-key="1" data-code="Digit1">1</button>
+        <button class="v-btn" data-key="2" data-code="Digit2">2</button>
+        <button class="v-btn" data-key="3" data-code="Digit3">3</button>
+        <button class="v-btn func" data-key="Backspace" data-code="Backspace">BS</button>
+        <button class="v-btn" data-key="0" data-code="Digit0">0</button>
+        <button class="v-btn func" data-key="Enter" data-code="Enter">↵</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="swipe-curtain">NOW LOADING...</div>
+  <div id="shorts-ui">↑ スワイプ または ホイールで次へ ↓</div>
+</div>
+
+<div id="options-modal" class="modal">
+  <div class="modal-content">
+    <h2>オプション</h2>
+    <div class="options-section">
+      <h3>表示するゲーム</h3>
+      <div id="hide-games-list"></div>
+    </div>
+    <button class="ui-btn btn-primary" onclick="closeOptions()">閉じる</button>
+  </div>
+</div>
+
+<script src="core.js"></script>
+<script src="games/dino/dino.js"></script>
+<script src="games/tetris/tetris.js"></script>
+<script src="games/100masu/100masu.js"></script>
+<script src="games/houndhare/houndhare.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
