@@ -16,43 +16,18 @@ class GameScene {
   init() { this.showTitle(); }
   cleanup() { this.stopGameLoop(); this.removeListeners(); }
 
-  // --- ローカルストレージ管理 ---
-  get storageKey() { return 'hima_records_' + this.name; }
-
-  getRecords() {
-    if (this.recordType === 'none') return [];
-    const data = localStorage.getItem(this.storageKey);
-    return data ? JSON.parse(data) : [];
-  }
-
+  // --- ローカルストレージ管理（完全無効化） ---
   saveRecord(newScore) {
-    if (this.recordType === 'none') return;
-    let records = this.getRecords();
-    records.push(newScore);
-    if (this.recordType === 'desc') {
-      records.sort((a, b) => b - a);
-    } else {
-      records.sort((a, b) => a - b);
-    }
-    records = records.slice(0, 3);
-    localStorage.setItem(this.storageKey, JSON.stringify(records));
+    // 各ゲームに saveRecord() の呼び出しが残っていても、
+    // ここで何もしないことでエラーを回避しつつ保存を無効化するわ。
   }
 
   getRecordsHTML() {
-    if (this.recordType === 'none') return '';
-    const records = this.getRecords();
-    let html = '<div class="ranking"><h4>🏆ランキングTOP3</h4>';
-    if (records.length === 0) {
-      html += '<p style="text-align:center; margin:0; font-size:0.9rem; color:#aaa;">まだ記録がないわ</p>';
-    } else {
-      html += '<ol>';
-      records.forEach(r => { html += `<li>${r} ${this.scoreUnit}</li>`; });
-      html += '</ol>';
-    }
-    html += '</div>';
-    return html;
+    // タイトル画面で getRecordsHTML() が呼ばれても、
+    // ただの空文字を返すことで、「まだ記録がない」という文言ごと
+    // ランキングのUIを跡形もなく消し去ってあげる。
+    return '';
   }
-
   // --- スマホUI管理 ---
   updateMobileUI() {
     const dpad = document.getElementById('v-dpad');
