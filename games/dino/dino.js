@@ -27,7 +27,7 @@ class DinoGameScene extends GameScene {
     this.showUI(`
       <h2>${this.name}</h2>
       <h3>操作方法</h3>
-      <p>【SPACE】キー：ジャンプ<br>サボテンは飛び越え、高い空を飛ぶ鳥はやり過ごせ。</p>
+      <p>【SPACE】キー：ジャンプ<br>メンテ中</p>
       <div class="btn-group">
         <button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button>
       </div>
