@@ -35,10 +35,9 @@ canvas {
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   display: none;
-  /* 画面の縮小バグを永久に防ぐための究極の指定 */
   width: 100%;
   height: 100%;
-  max-height: 85vh; /* PC用基本サイズ。スマホ時はJSで上書きされる */
+  max-height: 85vh; 
   object-fit: contain;
   touch-action: none;
 }
@@ -64,7 +63,6 @@ canvas {
 #virtual-controls { display: none; width: 100%; margin-top: 15px; justify-content: center; gap: 20px; user-select: none; }
 .v-section { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 .h-row { display: flex; gap: 5px; }
-.num-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
 .v-btn {
   background: var(--sidebar-bg); color: var(--text-color); border: 2px solid #444;
   border-radius: 8px; width: 50px; height: 50px; font-size: 1.2rem; font-weight: bold;
@@ -72,7 +70,6 @@ canvas {
 }
 .v-btn:active { background: #555; transform: scale(0.9); }
 .v-btn.round { width: 70px; height: 70px; border-radius: 50%; border-color: var(--accent-color); }
-.v-btn.func { background: #444; font-size: 0.9rem; }
 
 .ranking { margin-top: 15px; background: rgba(0, 0, 0, 0.4); padding: 15px 20px; border-radius: 8px; text-align: left; }
 .ranking h4 { margin: 0 0 10px 0; color: var(--accent-color); font-size: 1.1rem; text-align: center; }
@@ -88,64 +85,4 @@ canvas {
   #main-content { padding: 10px; justify-content: flex-start; }
   #virtual-controls.playing { display: flex; flex-wrap: wrap; }
   .v-btn { width: 45px; height: 45px; font-size: 1rem; }
-}
-
-/* ======== 新機能：オプションモーダル ======== */
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; }
-.modal-content { background: var(--sidebar-bg); padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
-.modal-content h2 { margin-top: 0; color: #fff; border-bottom: 1px solid #555; padding-bottom: 10px; }
-.options-section { text-align: left; margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid #444; }
-.checkbox-label { display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; color: #e0e0e0; font-weight: bold; }
-.checkbox-label input { margin-right: 12px; transform: scale(1.2); accent-color: var(--accent-color); }
-
-/* ======== 新機能：ショートモード用カーテン & UI ======== */
-#swipe-curtain {
-  position: absolute; inset: 0; background: #0a0a14; z-index: 150;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--accent-color); font-size: 2rem; font-weight: bold; letter-spacing: 2px;
-  transform: translateY(100%); /* 初期は画面外(下) */
-}
-#swipe-curtain.slide-in { transform: translateY(0); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
-#swipe-curtain.slide-out { transform: translateY(-100%); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
-#swipe-curtain.no-transition { transition: none; }
-
-/* ======== 新機能：ショートモード用カーテン & UI ======== */
-#swipe-curtain {
-  position: absolute; inset: 0; background: #0a0a14; z-index: 150;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--accent-color); font-size: 2rem; font-weight: bold; letter-spacing: 2px;
-  transform: translateY(100%);
-}
-#swipe-curtain.slide-in { transform: translateY(0); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
-#swipe-curtain.slide-out { transform: translateY(-100%); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
-#swipe-curtain.no-transition { transition: none; }
-
-/* ショートモード起動時にメインコンテンツ全体を上に押し上げる */
-body.shorts-active #main-content {
-  padding-bottom: 60px;
-}
-
-/* 画面最下部60pxのスワイプ専用聖域 */
-#shorts-ui {
-  display: none; position: absolute; bottom: 0; left: 0; 
-  width: 100%; height: 60px; 
-  z-index: 200; pointer-events: auto; touch-action: none;
-  background: rgba(255, 255, 255, 0.05); /* うっすら見えるエリア */
-  border-top: 1px solid rgba(255,255,255,0.1);
-  align-items: center; justify-content: center;
-}
-
-body.shorts-active #shorts-ui {
-  display: flex;
-}
-
-/* 一瞬出て消えるテキスト */
-#shorts-ui-text {
-  background: rgba(255, 71, 87, 0.8); color: white;
-  padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;
-  opacity: 1; transition: opacity 0.5s ease;
-}
-
-#shorts-ui-text.fade-out {
-  opacity: 0;
 }

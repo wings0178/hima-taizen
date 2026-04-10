@@ -9,8 +9,7 @@ class GameScene {
   constructor(name) { 
     this.name = name; 
     this.score = 0; 
-    // ランキングの並び順と単位（ゲームごとに上書きするわよ）
-    this.recordType = 'desc'; // 'desc': 降順(高い方が良い), 'asc': 昇順(少ない方が良い), 'none': 記録しない
+    this.recordType = 'desc';
     this.scoreUnit = 'pt';
   }
   
@@ -31,11 +30,11 @@ class GameScene {
     let records = this.getRecords();
     records.push(newScore);
     if (this.recordType === 'desc') {
-      records.sort((a, b) => b - a); // 降順
+      records.sort((a, b) => b - a);
     } else {
-      records.sort((a, b) => a - b); // 昇順
+      records.sort((a, b) => a - b);
     }
-    records = records.slice(0, 3); // 上位3つだけ残す
+    records = records.slice(0, 3);
     localStorage.setItem(this.storageKey, JSON.stringify(records));
   }
 
@@ -58,20 +57,18 @@ class GameScene {
   updateMobileUI() {
     const dpad = document.getElementById('v-dpad');
     const action = document.getElementById('v-action');
-    const numpad = document.getElementById('v-numpad');
     
     if (this.name === '恐竜ランナー') {
-      dpad.style.display = 'none'; action.style.display = 'flex'; numpad.style.display = 'none';
+      if(dpad) dpad.style.display = 'none'; 
+      if(action) action.style.display = 'flex';
       canvas.style.maxHeight = '45vh';
-    } else if (this.name === '本格テトリス') {
-      dpad.style.display = 'none'; action.style.display = 'none'; numpad.style.display = 'none';
+    } else if (this.name === '本格テトリス' || this.name === 'テトリス') {
+      if(dpad) dpad.style.display = 'none'; 
+      if(action) action.style.display = 'none'; 
       canvas.style.maxHeight = '75vh'; 
-    } else if (this.name === '百ます計算') {
-      dpad.style.display = 'flex'; action.style.display = 'none'; numpad.style.display = 'flex';
-      canvas.style.maxHeight = '45vh';
     } else {
-      // 猟犬とうさぎ等のデフォルト
-      dpad.style.display = 'none'; action.style.display = 'none'; numpad.style.display = 'none';
+      if(dpad) dpad.style.display = 'flex'; 
+      if(action) action.style.display = 'none'; 
       canvas.style.maxHeight = '60vh'; 
     }
   }
@@ -80,13 +77,26 @@ class GameScene {
     canvas.style.display = 'none';
     uiPanel.style.display = 'block';
     uiContent.innerHTML = html;
-    document.getElementById('virtual-controls').classList.remove('playing');
+    const vc = document.getElementById('virtual-controls');
+    if (vc) vc.classList.remove('playing');
   }
+
   hideUI() {
     uiPanel.style.display = 'none';
     canvas.style.display = 'block';
     this.updateMobileUI();
-    document.getElementById('virtual-controls').classList.add('playing');
+
+    // 画面縮小・解像度バグを防ぐ初期化処理
+    if (canvas && ctx) {
+      canvas.width = 800;
+      canvas.height = 600;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.globalAlpha = 1.0;
+      ctx.shadowBlur = 0;
+    }
+
+    const vc = document.getElementById('virtual-controls');
+    if (vc) vc.classList.add('playing');
   }
 
   showTitle() {}
