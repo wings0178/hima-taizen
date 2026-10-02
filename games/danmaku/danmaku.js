@@ -1,6 +1,6 @@
 class DanmakuGameScene extends GameScene {
   constructor() {
-    super('弾幕シューティング');
+    super('弾幕シューティング', {controls: ['dpad', 'bomb']});
     this.keys = new Set();
     this.keydownHandler = e => this.handleKey(e, true);
     this.keyupHandler = e => this.handleKey(e, false);

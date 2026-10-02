@@ -31,6 +31,13 @@
   <div id="ui-panel" class="ui-panel">
     <div id="ui-content"></div>
   </div>
+  <div id="slime-stretch" hidden aria-hidden="true">
+    <svg><path id="slime-stretch-body" class="slime-body"/><g id="slime-face"><circle cx="-7" cy="-2" r="3"/><circle cx="7" cy="-2" r="3"/><path class="slime-mouth" d="M-4 5Q0 9 4 5"/></g></svg>
+    <span id="slime-direction"></span>
+  </div>
+  </div>
+
+  <div id="game-dock">
   <button id="reel-slime" aria-label="スライムを上下に引いてゲーム切り替え" aria-describedby="reel-hint" aria-keyshortcuts="ArrowUp ArrowDown" hidden>
     <svg viewBox="0 0 64 64" aria-hidden="true">
       <path class="slime-body" d="M8 43C8 29 17 27 21 17C26 4 42 8 45 20C47 29 58 30 57 44C55 58 12 59 8 43Z"/>
@@ -40,12 +47,6 @@
     </svg>
     <span class="slime-arrows" aria-hidden="true">↕</span>
   </button>
-  <div id="slime-stretch" hidden aria-hidden="true">
-    <svg><path id="slime-stretch-body" class="slime-body"/><g id="slime-face"><circle cx="-7" cy="-2" r="3"/><circle cx="7" cy="-2" r="3"/><path class="slime-mouth" d="M-4 5Q0 9 4 5"/></g></svg>
-    <span id="slime-direction"></span>
-  </div>
-  </div>
-  
   <div id="virtual-controls">
     <div id="v-dpad" class="v-section">
       <button class="v-btn" data-key="ArrowUp" data-code="ArrowUp" aria-label="上へ移動">↑</button>
@@ -59,6 +60,7 @@
     <div id="v-action" class="v-section">
       <button class="v-btn round" data-key=" " data-code="Space">ジャンプ</button>
     </div>
+  </div>
   </div>
 </div>
 

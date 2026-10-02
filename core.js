@@ -5,8 +5,9 @@ const uiContent = document.getElementById('ui-content');
 let currentScene = null;
 
 class GameScene {
-  constructor(name) {
+  constructor(name, {controls = []} = {}) {
     this.name = name;
+    this.controls = controls;
     this.score = 0;
     this.recordType = 'desc';
     this.scoreUnit = 'pt';
@@ -25,9 +26,10 @@ class GameScene {
   saveRecord() {}
   getRecordsHTML() { return ''; }
   updateMobileUI() {
-    document.getElementById('v-dpad').style.display = this.name === '弾幕シューティング' ? 'flex' : 'none';
-    document.getElementById('v-action').style.display = this.name === '恐竜ランナー' ? 'flex' : 'none';
-    document.getElementById('bomb-game').hidden = this.name !== '弾幕シューティング';
+    document.getElementById('v-dpad').style.display = this.controls.includes('dpad') ? 'flex' : 'none';
+    document.getElementById('v-action').style.display = this.controls.includes('jump') ? 'flex' : 'none';
+    document.getElementById('bomb-game').hidden = !this.controls.includes('bomb');
+    document.getElementById('virtual-controls').classList.toggle('playing', this.controls.some(control => ['dpad', 'jump'].includes(control)));
   }
   showUI(html) {
     if (typeof cancelReelTransition === 'function') cancelReelTransition();
@@ -49,7 +51,6 @@ class GameScene {
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
     document.getElementById('play-controls').hidden = false;
-    document.getElementById('virtual-controls').classList.toggle('playing', this.name !== 'テトリス');
     syncPauseButton();
   }
   togglePause() {

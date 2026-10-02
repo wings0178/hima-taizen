@@ -503,6 +503,93 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
     await assertOneLoop(page);
     await phone.screenshot({path:path.join(output,'slime-idle-mobile.png')});
   });
+  await check('shared frame and slime position stay identical across all games and title/play/pause/result states', async () => {
+    for(const size of [{width:320,height:568},{width:390,height:844},{width:768,height:1024},{width:1365,height:900},{width:844,height:390},{width:640,height:360}]) {
+      await phone.setViewportSize(size);
+      for(const side of ['left','right']) {
+        await phone.evaluate(side=>{setReelMode(true);applySlimeSide(side);},side);
+        let baseline;
+        for(const key of ['dino','tetris','danmaku']) {
+          for(const state of ['play','pause','result','title']) {
+            await phone.evaluate(({key,state})=>{
+              selectGame(key,true);
+              if(state==='pause') currentScene.togglePause();
+              if(state==='result') currentScene.showResult();
+              if(state==='title') currentScene.showTitle();
+            },{key,state});
+            const geometry=await phone.evaluate(()=>{
+              const rect=id=>{const r=document.getElementById(id).getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};};
+              return {frame:rect('game-stage'),slime:rect('reel-slime'),dock:rect('game-dock')};
+            });
+            if(!baseline) baseline=geometry;
+            for(const area of ['frame','slime','dock']) for(const property of ['x','y','width','height']) {
+              assert.ok(Math.abs(baseline[area][property]-geometry[area][property])<=1,JSON.stringify({size,side,key,state,baseline,geometry}));
+            }
+            const reachable=await phone.locator('#reel-slime').evaluate(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));});
+            assert.equal(reachable,true,JSON.stringify({size,side,key,state}));
+            assert.ok(geometry.slime.y>=geometry.frame.y+geometry.frame.height,JSON.stringify(geometry));
+          }
+        }
+      }
+    }
+  });
+  await check('game content keeps its aspect ratio and useful size without overlapping buttons at narrow and landscape sizes', async () => {
+    for(const size of [{width:320,height:568},{width:390,height:844},{width:844,height:390},{width:640,height:360}]) {
+      await phone.setViewportSize(size);
+      for(const key of ['dino','tetris','danmaku']) {
+        await phone.evaluate(key=>{applySlimeSide('left');selectGame(key,true);currentScene.draw();},key);
+        const content=await phone.evaluate(()=>{
+          const r=canvas.getBoundingClientRect(),scale=Math.min(r.width/canvas.width,r.height/canvas.height);
+          const left=r.x+(r.width-canvas.width*scale)/2,top=r.y+(r.height-canvas.height*scale)/2;
+          const a=canvasPoint(left+.5*scale,top+.5*scale),b=canvasPoint(left+(canvas.width-.5)*scale,top+(canvas.height-.5)*scale);
+          return {width:canvas.width*scale,height:canvas.height*scale,ratio:canvas.width/canvas.height,scale,a,b,frame:{x:r.x,y:r.y,width:r.width,height:r.height}};
+        });
+        assert.ok(Math.abs(content.width/content.height-content.ratio)<.001);
+        assert.ok(content.width<=content.frame.width+1 && content.height<=content.frame.height+1);
+        assert.ok(content.a.inside && content.b.inside);
+        assert.ok(Math.abs(content.a.x-.5)<.01 && Math.abs(content.a.y-.5)<.01);
+        if(key==='dino') assert.ok(content.width>=280 && content.height>=140,JSON.stringify({size,key,content}));
+        if(key==='tetris') assert.ok(content.scale*25>=10,JSON.stringify({size,key,content}));
+        if(key==='danmaku') assert.ok(content.height>=220 && content.width>=145,JSON.stringify({size,key,content}));
+        for(const selector of ['#play-controls .ui-btn:not([hidden])','#virtual-controls .v-btn','#reel-slime']) {
+          for(const button of await phone.locator(selector).all()) {
+            if(!await button.isVisible()) continue;
+            const r=await button.boundingBox();
+            assert.ok(r.x>=0 && r.x+r.width<=size.width+1 && r.y>=0 && r.y+r.height<=size.height+1,JSON.stringify({size,key,r}));
+            const reachable=await button.evaluate(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));});
+            assert.equal(reachable,true,JSON.stringify({size,key,selector,r}));
+            assert.ok(r.y+r.height<=content.frame.y+1 || r.y>=content.frame.y+content.frame.height-1);
+          }
+        }
+        if(size.width===390 || size.width===320) {
+          await phone.waitForFunction(()=>!slimeReturn && !reelTransition);
+          await sleep(70);
+          assert.equal(await phone.locator('#reel-slime svg').isVisible(),true);
+          await phone.screenshot({path:path.join(output,`shared-${key}-${size.width}.png`)});
+        }
+      }
+    }
+  });
+  await check('new scenes inherit the common frame and controls without game-name layout rules', async () => {
+    await phone.setViewportSize({width:390,height:844});
+    const result=await phone.evaluate(()=>{
+      selectGame('dino',true);
+      const geometry=()=>{const r=gameStage.getBoundingClientRect(),s=reelSlime.getBoundingClientRect();return {frame:[r.x,r.y,r.width,r.height],slime:[s.x,s.y,s.width,s.height]};};
+      const before=geometry();
+      class LayoutScene extends GameScene {
+        constructor(){super('表示確認',{controls:['dpad','bomb']});}
+        startGame(){this.hideUI();canvas.width=1200;canvas.height=400;this.isActive=true;this.draw();}
+        draw(){ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);}
+      }
+      gameRegistry.layoutTest=new LayoutScene();
+      try {
+        selectGame('layoutTest',true);
+        return {before,after:geometry(),pad:getComputedStyle(document.getElementById('v-dpad')).display,bomb:document.getElementById('bomb-game').hidden};
+      } finally {selectGame('dino',true);delete gameRegistry.layoutTest;renderSidebar();selectGame('dino',true);}
+    });
+    assert.deepEqual(result.after,result.before);
+    assert.equal(result.pad,'flex');assert.equal(result.bomb,false);
+  });
   assert.deepEqual(errors,[]);
   report.push('No JavaScript errors');
   fs.writeFileSync(path.join(output, 'verification.json'),JSON.stringify({url:base,checks:report,errors},null,2));

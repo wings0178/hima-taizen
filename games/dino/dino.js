@@ -14,7 +14,7 @@ const SPRITES = {
 
 class DinoGameScene extends GameScene {
   constructor() {
-    super('恐竜ランナー');
+    super('恐竜ランナー', {controls: ['jump']});
     this.recordType = 'desc'; // 追加
     this.scoreUnit = 'pt';    // 追加
     this.pixelSize = 3;
