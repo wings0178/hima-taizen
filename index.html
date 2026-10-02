@@ -14,7 +14,8 @@
   <ul class="game-list" id="game-list"></ul>
   <div id="browse-controls">
     <button id="reel-toggle" class="ui-btn btn-secondary" aria-pressed="false">ショートモード</button>
-    <small id="reel-hint" hidden>画面を上下スワイプ</small>
+    <button id="settings-open" class="ui-btn btn-secondary" aria-haspopup="dialog">設定</button>
+    <small id="reel-hint" hidden>スライムを上下に引く</small>
     <span id="reel-position" class="sr-only" aria-live="polite"></span>
   </div>
 </div>
@@ -29,6 +30,19 @@
   <canvas id="game-canvas" aria-label="ゲーム画面"></canvas>
   <div id="ui-panel" class="ui-panel">
     <div id="ui-content"></div>
+  </div>
+  <button id="reel-slime" aria-label="スライムを上下に引いてゲーム切り替え" aria-describedby="reel-hint" aria-keyshortcuts="ArrowUp ArrowDown" hidden>
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <path class="slime-body" d="M8 43C8 29 17 27 21 17C26 4 42 8 45 20C47 29 58 30 57 44C55 58 12 59 8 43Z"/>
+      <path class="slime-shine" d="M22 26Q23 18 30 17"/>
+      <circle cx="25" cy="37" r="3"/><circle cx="41" cy="37" r="3"/>
+      <path class="slime-mouth" d="M29 44Q33 48 37 44"/>
+    </svg>
+    <span class="slime-arrows" aria-hidden="true">↕</span>
+  </button>
+  <div id="slime-stretch" hidden aria-hidden="true">
+    <svg><path id="slime-stretch-body" class="slime-body"/><g id="slime-face"><circle cx="-7" cy="-2" r="3"/><circle cx="7" cy="-2" r="3"/><path class="slime-mouth" d="M-4 5Q0 9 4 5"/></g></svg>
+    <span id="slime-direction"></span>
   </div>
   </div>
   
@@ -48,11 +62,24 @@
   </div>
 </div>
 
+<dialog id="settings-dialog" aria-labelledby="settings-title">
+  <h2 id="settings-title">設定</h2>
+  <fieldset>
+    <legend>スライムの位置</legend>
+    <label><input type="radio" name="slime-side" value="left" checked> 左下</label>
+    <label><input type="radio" name="slime-side" value="right"> 右下</label>
+  </fieldset>
+  <p>このブラウザーに保存します。</p>
+  <p id="settings-error" role="status" hidden>このブラウザーでは設定を保存できません。今回の位置変更は有効です。</p>
+  <form method="dialog"><button class="ui-btn btn-secondary">閉じる</button></form>
+</dialog>
+
 <script src="core.js"></script>
 <script src="games/dino/dino.js"></script>
 <script src="games/tetris/tetris.js"></script>
 <script src="games/danmaku/danmaku.js"></script>
 <script src="app.js"></script>
+<script src="reel-slime.js"></script>
 
 </body>
 </html>

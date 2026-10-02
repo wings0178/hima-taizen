@@ -62,7 +62,7 @@ class TetrisGameScene extends GameScene {
       左右にドラッグ：移動<br>
       下フリック：一気に落下<br>
       上フリック：ホールド
-      <span class="reel-input-help">ショートモード：短いフリックで操作<br>大きな上下スワイプでゲーム切り替え</span>
+      <span class="reel-input-help">スライムを上下に引くとゲーム切り替え</span>
       </span>
       </p>
       </details>

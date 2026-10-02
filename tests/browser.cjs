@@ -31,14 +31,14 @@ async function assertOneLoop(page) {
   const s = await scene(page);
   assert.equal(s.raf, s.active && !s.paused ? 1 : 0, JSON.stringify(s));
 }
-async function touchDrag(page, selector, dx, dy, delay = 0) {
+async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
   const box = await page.locator(selector).boundingBox();
   const x = box.x + box.width / 2, y = box.y + box.height / 2;
   const cdp = await page.context().newCDPSession(page);
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= steps; i++) {
     if(delay) await sleep(delay);
-    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+dx*i/5,y:y+dy*i/5}]});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+dx*i/steps,y:y+dy*i/steps}]});
   }
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await cdp.detach();
@@ -260,16 +260,17 @@ async function touchDrag(page, selector, dx, dy, delay = 0) {
   await check('real mobile reel swipe and Tetris gestures stay separate', async () => {
     await phone.locator('[data-game=dino]').click();
     await phone.getByRole('button',{name:'ショートモード',exact:true}).click();
-    await touchDrag(phone,'#game-canvas',0,-180);
+    await touchDrag(phone,'#reel-slime',0,-180);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
-    await touchDrag(phone,'#game-canvas',0,-70);
+    await touchDrag(phone,'#game-canvas',0,-180,0,2);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
-    assert.ok(await phone.evaluate(()=>currentScene.holdPieceIndex!==null));
-    await touchDrag(phone,'#game-canvas',0,70);
+    const touchState=await phone.evaluate(()=>({duration:Date.now()-currentScene.touchStartTime,startX:currentScene.touchStartX,startY:currentScene.touchStartY,axis:currentScene.touchAxis,swiping:currentScene.isSwiping,paused:currentScene.isPaused}));
+    assert.ok(await phone.evaluate(()=>currentScene.holdPieceIndex!==null),JSON.stringify(touchState));
+    await touchDrag(phone,'#game-canvas',0,180,0,2);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
     assert.ok(await phone.evaluate(()=>currentScene.board.some(row=>row.some(Boolean))));
     await phone.screenshot({path:path.join(output, 'tetris-mobile.png')});
-    await touchDrag(phone,'#game-canvas',0,-180);
+    await touchDrag(phone,'#reel-slime',0,-180);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'danmaku');
   });
   await check('mobile danmaku drag and held pad release', async () => {
@@ -312,7 +313,7 @@ async function touchDrag(page, selector, dx, dy, delay = 0) {
     assert.equal(await phone.evaluate(()=>currentScene.gestureActive),false);
   });
   await check('reel swipe direction, cancelled and horizontal gestures', async () => {
-    await touchDrag(phone,'#game-canvas',0,180);
+    await touchDrag(phone,'#reel-slime',0,50);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'dino');
     await touchDrag(phone,'#game-canvas',65,0);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'dino');
@@ -323,35 +324,116 @@ async function touchDrag(page, selector, dx, dy, delay = 0) {
     await cdp.detach();
     assert.equal(await phone.evaluate(()=>selectedGameKey),'dino');
   });
-  await check('full-screen swipe follows the finger and never applies navigation input to Tetris or the ship', async () => {
-    assert.equal(await phone.locator('#reel-next,#reel-prev,#reel-nav,#reel-swipe').count(),0);
+  await check('slime stretches while pulling and isolates navigation from game input', async () => {
     await phone.evaluate(()=>{selectGame('tetris',true);currentScene.togglePause();});
     const before = await phone.evaluate(()=>JSON.stringify({piece:currentScene.piece,board:currentScene.board,hold:currentScene.holdPieceIndex,score:currentScene.score}));
-    const box = await phone.locator('#game-canvas').boundingBox();
+    const box = await phone.locator('#reel-slime').boundingBox();
     const x=box.x+box.width/2,y=box.y+box.height/2;
     const cdp=await mobile.newCDPSession(phone);
     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
     await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-70}]});
     assert.equal(await phone.locator('.reel-drag-preview').count(),1);
-    assert.ok(await phone.evaluate(()=>reelDragLayer.children[0].style.transform.includes('-70')));
+    assert.equal(await phone.locator('#slime-stretch').isVisible(),true);
+    assert.equal(await phone.locator('#slime-stretch').getAttribute('class'),'ready');
+    const shape=await phone.locator('#slime-stretch-body').getAttribute('d');
+    assert.ok(shape.length>50);
     assert.equal(await phone.evaluate(()=>JSON.stringify({piece:currentScene.piece,board:currentScene.board,hold:currentScene.holdPieceIndex,score:currentScene.score})),before);
-    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-180}]});
-    await phone.screenshot({path:path.join(output,'full-screen-swipe.png')});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+15,y:y-180}]});
+    assert.notEqual(await phone.locator('#slime-stretch-body').getAttribute('d'),shape);
+    await phone.screenshot({path:path.join(output,'slime-pull-mobile.png')});
     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
     assert.equal(await phone.evaluate(()=>selectedGameKey),'danmaku');
     assert.equal(await phone.evaluate(()=>JSON.stringify({piece:gameRegistry.tetris.piece,board:gameRegistry.tetris.board,hold:gameRegistry.tetris.holdPieceIndex,score:gameRegistry.tetris.score})),before);
     const ship=await phone.evaluate(()=>({...currentScene.player}));
-    await touchDrag(phone,'#game-canvas',0,-180,40);
+    await touchDrag(phone,'#reel-slime',0,-120,80);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'dino');
     assert.deepEqual(await phone.evaluate(()=>gameRegistry.danmaku.player),ship);
     await phone.evaluate(()=>selectGame('danmaku',true));
     const playerY=await phone.evaluate(()=>currentScene.player.y);
-    await touchDrag(phone,'#game-canvas',0,-140,80);
+    await touchDrag(phone,'#game-canvas',0,-180);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'danmaku');
     assert.ok(await phone.evaluate(()=>currentScene.player.y)<playerY);
     assert.equal(await phone.locator('.reel-drag-preview').count(),0);
     await cdp.detach();
   });
+  await check('slime taps, short pulls, reversal, pointer loss and multiple fingers never switch', async () => {
+    await phone.evaluate(()=>selectGame('tetris',true));
+    const before=await phone.evaluate(()=>({hold:currentScene.holdPieceIndex,score:currentScene.score,board:JSON.stringify(currentScene.board)}));
+    await phone.locator('#reel-slime').tap();
+    await touchDrag(phone,'#reel-slime',0,-25);
+    await touchDrag(phone,'#reel-slime',100,0);
+    const cdp=await mobile.newCDPSession(phone);
+    const box=await phone.locator('#reel-slime').boundingBox(),p={x:box.x+32,y:box.y+32};
+    for(const ending of ['touchEnd','touchCancel']) {
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[p]});
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:p.x,y:p.y-130}]});
+      if(ending==='touchEnd') await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[p]});
+      await cdp.send('Input.dispatchTouchEvent',{type:ending,touchPoints:[]});
+      assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
+    }
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...p,id:1}]});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:p.x,y:p.y-130,id:1}]});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:p.x,y:p.y-130,id:1},{x:p.x+80,y:p.y-130,id:2}]});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
+    assert.equal(await phone.evaluate(()=>reelGesture),null);
+    assert.equal(await phone.locator('.reel-drag-preview').count(),0);
+    assert.deepEqual(await phone.evaluate(()=>({hold:currentScene.holdPieceIndex,score:currentScene.score,board:JSON.stringify(currentScene.board)})),before);
+    await cdp.detach();
+    await phone.waitForFunction(()=>!slimeReturn);
+    assert.equal(await phone.locator('#slime-stretch').isVisible(),false);
+  });
+  await check('settings default left, persist right, preserve state and close with keyboard', async () => {
+    await phone.evaluate(()=>{setReelMode(false);selectGame('danmaku',false);});
+    assert.equal(await phone.locator('#reel-slime').isVisible(),false);
+    await phone.locator('#settings-open').click();
+    assert.equal(await phone.locator('input[value=left]').isChecked(),true);
+    await phone.locator('input[value=right]').check();
+    assert.equal(await phone.evaluate(()=>JSON.parse(localStorage.getItem(settingsKey)).slimeSide),'right');
+    await phone.screenshot({path:path.join(output,'slime-settings-mobile.png')});
+    await phone.getByRole('button',{name:'閉じる',exact:true}).click();
+    await phone.reload();
+    await phone.getByRole('button',{name:'ショートモード',exact:true}).click();
+    assert.equal(await phone.locator('#reel-slime').getAttribute('data-side'),'right');
+    const right=await phone.locator('#reel-slime').boundingBox();
+    assert.ok(right.x>250);
+    await touchDrag(phone,'#reel-slime',0,-120);
+    assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
+    await phone.locator('#settings-open').click();
+    const frozen=await phone.evaluate(()=>JSON.stringify({piece:currentScene.piece,board:currentScene.board,score:currentScene.score}));
+    await sleep(100);
+    await phone.keyboard.press('PageDown');
+    assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
+    assert.equal(await phone.evaluate(()=>currentScene.isPaused),true);
+    assert.equal(await phone.evaluate(()=>JSON.stringify({piece:currentScene.piece,board:currentScene.board,score:currentScene.score})),frozen);
+    await phone.locator('input[value=left]').check();
+    await phone.keyboard.press('Escape');
+    await phone.waitForFunction(()=>!settingsDialog.open && !currentScene.isPaused);
+    assert.equal(await phone.locator('#settings-open').evaluate(e=>e===document.activeElement),true);
+    await phone.evaluate(()=>currentScene.togglePause());
+    await phone.locator('#settings-open').click();
+    await phone.getByRole('button',{name:'閉じる',exact:true}).click();
+    assert.equal(await phone.evaluate(()=>currentScene.isPaused),true);
+    await phone.evaluate(()=>selectGame('dino',true));
+  });
+  await check('unavailable settings storage falls back and reports save failure without breaking games', async () => {
+    const isolated=await browser.newPage();
+    isolated.on('pageerror',e=>errors.push(e.message));
+    await isolated.addInitScript(()=>{
+      Storage.prototype.getItem=()=>{throw new Error('blocked');};
+      Storage.prototype.setItem=()=>{throw new Error('blocked');};
+    });
+    await isolated.goto(base);
+    await isolated.locator('#settings-open').click();
+    assert.equal(await isolated.locator('input[value=left]').isChecked(),true);
+    await isolated.locator('input[value=right]').check();
+    assert.equal(await isolated.locator('#settings-error').isVisible(),true);
+    await isolated.getByRole('button',{name:'閉じる',exact:true}).click();
+    await isolated.getByRole('button',{name:'ショートモード',exact:true}).click();
+    assert.equal(await isolated.locator('#reel-slime').getAttribute('data-side'),'right');
+    await isolated.close();
+  });
+
   await check('mouse wheel on the canvas changes games once per burst in both directions', async () => {
     await page.evaluate(()=>{setReelMode(true);selectGame('dino',true);});
     const box=await page.locator('#game-canvas').boundingBox();
@@ -365,7 +447,7 @@ async function touchDrag(page, selector, dx, dy, delay = 0) {
     await page.mouse.wheel(0,-120);
     await page.waitForFunction(()=>selectedGameKey==='dino');
     await page.waitForFunction(()=>!reelTransition);
-    const stage=await page.locator('#game-canvas').boundingBox();
+    const stage=await page.locator('#reel-slime').boundingBox();
     await page.mouse.move(stage.x+stage.width/2,stage.y+stage.height/2);
     await page.mouse.down();
     await page.mouse.move(stage.x+stage.width/2,stage.y+stage.height/2-180,{steps:5});
@@ -375,7 +457,7 @@ async function touchDrag(page, selector, dx, dy, delay = 0) {
   });
   await check('reel swipes also work from result screens', async () => {
     await phone.evaluate(()=>{selectGame('dino',true);currentScene.showResult();});
-    await touchDrag(phone,'#game-stage',0,-180);
+    await touchDrag(phone,'#reel-slime',0,-180);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
     await phone.waitForFunction(()=>!reelTransition);
   });
@@ -389,6 +471,37 @@ async function touchDrag(page, selector, dx, dy, delay = 0) {
       assert.ok(nav.y+nav.height<=390);
     }
     await phone.screenshot({path:path.join(output, 'landscape.png')});
+  });
+  await check('slime stays reachable in both corners at mobile sizes and supports reduced motion and keyboard', async () => {
+    for(const size of [{width:320,height:568},{width:390,height:844},{width:844,height:390}]) {
+      await phone.setViewportSize(size);
+      for(const side of ['left','right']) {
+        await phone.evaluate(side=>applySlimeSide(side),side);
+        for(const key of ['dino','tetris','danmaku']) {
+          await phone.evaluate(key=>selectGame(key,true),key);
+          const b=await phone.locator('#reel-slime').boundingBox();
+          assert.ok(b.x>=0 && b.x+b.width<=size.width && b.y>=0 && b.y+b.height<=size.height,JSON.stringify({size,side,key,b}));
+          const reachable=await phone.locator('#reel-slime').evaluate(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));});
+          assert.equal(reachable,true);
+        }
+      }
+    }
+    await phone.setViewportSize({width:390,height:844});
+    await phone.evaluate(()=>{applySlimeSide('left');selectGame('dino',true);});
+    await phone.emulateMedia({reducedMotion:'reduce'});
+    await touchDrag(phone,'#reel-slime',0,-120);
+    assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
+    assert.equal(await phone.locator('.reel-transition').count(),0);
+    assert.equal(await phone.locator('#slime-stretch').isVisible(),false);
+    assert.equal(await phone.locator('#reel-slime svg').evaluate(e=>getComputedStyle(e).animationName),'none');
+    await phone.emulateMedia({reducedMotion:'no-preference'});
+    await page.locator('#reel-slime').focus();
+    await page.keyboard.press('ArrowUp');
+    assert.equal(await page.evaluate(()=>selectedGameKey),'danmaku');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(()=>selectedGameKey),'tetris');
+    await assertOneLoop(page);
+    await phone.screenshot({path:path.join(output,'slime-idle-mobile.png')});
   });
   assert.deepEqual(errors,[]);
   report.push('No JavaScript errors');

@@ -34,8 +34,6 @@ button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 #browse-controls { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
 #reel-hint { color: #bbb; font-size: 11px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.reel-mode #game-stage { touch-action: none; user-select: none; }
-.reel-mode .game-help[open] { touch-action: pan-y; }
 .game-help { margin: 16px 0 24px; }
 .game-help summary { color: var(--accent-color); font-size: 1.2rem; font-weight: bold; cursor: pointer; list-style-position: inside; }
 .game-help summary:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
@@ -46,6 +44,32 @@ button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .reel-preview { position: absolute; inset: 0; background: var(--bg-color); display: flex; align-items: center; justify-content: center; }
 .reel-preview canvas { display: block; box-shadow: none; }
 .reel-preview-title { color: #fff; font-size: 1.8rem; font-weight: bold; text-align: center; }
+#settings-open { padding: 8px 12px; }
+#settings-dialog { width: min(340px, calc(100vw - 32px)); box-sizing: border-box; padding: 24px; color: var(--text-color); background: var(--sidebar-bg); border: 1px solid #555; border-radius: 12px; }
+#settings-dialog::backdrop { background: rgba(0,0,0,.65); }
+#settings-dialog h2 { margin: 0 0 24px; color: #fff; }
+#settings-dialog fieldset { border: 0; padding: 0; margin: 0; }
+#settings-dialog legend { margin-bottom: 12px; font-weight: bold; }
+#settings-dialog label { display: inline-flex; align-items: center; gap: 6px; padding: 12px 14px 12px 0; cursor: pointer; }
+#settings-dialog input { accent-color: var(--accent-color); width: 18px; height: 18px; }
+#settings-dialog p { color: #bbb; font-size: .85rem; line-height: 1.6; }
+#settings-dialog form { display: flex; justify-content: flex-end; margin-top: 24px; }
+#settings-error { color: #ffc1c8 !important; }
+#reel-slime { position: absolute; left: 12px; bottom: 24px; width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: none; color: #24151d; cursor: grab; touch-action: none; user-select: none; z-index: 42; }
+#reel-slime[data-side="right"] { left: auto; right: 12px; }
+#reel-slime svg { width: 64px; height: 64px; overflow: visible; transform-origin: 50% 80%; animation: slime-idle 3s ease-in-out infinite; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)); }
+.slime-body { fill: #ff8192; stroke: #ffc0c9; stroke-width: 1.5; }
+.slime-shine { fill: none; stroke: #ffe0e5; stroke-width: 3; stroke-linecap: round; }
+.slime-mouth { fill: none; stroke: #24151d; stroke-width: 2; stroke-linecap: round; }
+.slime-arrows { position: absolute; right: -3px; top: 9px; color: #fff; font-size: 21px; }
+#reel-slime.pulling { cursor: grabbing; }
+#reel-slime.pulling svg, #reel-slime.pulling .slime-arrows { visibility: hidden; }
+#slime-stretch { position: absolute; inset: 0; pointer-events: none; z-index: 41; }
+#slime-stretch svg { width: 100%; height: 100%; overflow: visible; fill: #24151d; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)); }
+#slime-direction { position: absolute; padding: 5px 9px; background: #29293d; color: #fff; border: 1px solid #ff8192; border-radius: 6px; font-size: 12px; white-space: nowrap; }
+#slime-stretch.ready .slime-body { fill: #ff4757; }
+@keyframes slime-idle { 0%,70%,100% { transform: scale(1); } 80% { transform: scale(1.08,.9); } 90% { transform: scale(.95,1.07); } }
+@media (prefers-reduced-motion: reduce) { #reel-slime svg { animation: none; } }
 
 #main-content {
   flex-grow: 1; display: flex; justify-content: center; align-items: center;

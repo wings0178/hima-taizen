@@ -6,13 +6,15 @@ const listEl = document.getElementById('game-list');
 const reelToggle = document.getElementById('reel-toggle');
 const gameStage = document.getElementById('game-stage');
 const reelHint = document.getElementById('reel-hint');
+const reelSlime = document.getElementById('reel-slime');
+const slimeStretch = document.getElementById('slime-stretch');
+const settingsDialog = document.getElementById('settings-dialog');
 let selectedGameKey = null;
 let reelMode = false;
 let reelGesture = null;
 let reelTransition = null;
 let reelDragLayer = null;
-let reelHelpDrag = null;
-const reelPointers = new Set();
+let slimeReturn = null;
 function renderSidebar() {
   listEl.innerHTML = '';
   for (const [key, scene] of Object.entries(gameRegistry)) {
@@ -56,6 +58,7 @@ function setReelMode(enabled) {
   reelToggle.setAttribute('aria-pressed', String(enabled));
   reelToggle.textContent = enabled ? '一覧に戻る' : 'ショートモード';
   reelHint.hidden = !enabled;
+  reelSlime.hidden = !enabled;
   selectGame(selectedGameKey, enabled);
 }
 function stepGame(direction, offset = 0) {
@@ -116,52 +119,18 @@ function animateGameSwitch(outgoing, incoming, direction, offset = 0) {
   }).catch(() => {});
 }
 reelToggle.addEventListener('click', () => setReelMode(!reelMode));
-// 画面全体のジェスチャーを先に判定する。未確定の入力はゲームへ渡さない。
+// スライムから始めた操作だけを切り替えに使う。ゲーム入力はそのまま通す。
 function cancelReelGesture() {
-  if (reelGesture && reelGesture.mode === 'play') {
-    reelGesture.scene.gestureActive = false;
-    if (reelGesture.scene.drag) reelGesture.scene.drag = null;
-  }
+  const gesture = reelGesture;
   reelGesture = null;
-  reelHelpDrag = null;
+  if (gesture && reelSlime.hasPointerCapture(gesture.id)) reelSlime.releasePointerCapture(gesture.id);
   if (reelDragLayer) reelDragLayer.remove();
   reelDragLayer = null;
-}
-function reelSwipeThreshold() { return Math.max(90, Math.min(120, gameStage.clientHeight * 0.2)); }
-function pointerSample(e) {
-  return {pointerId: e.pointerId, pointerType: e.pointerType, button: e.button,
-    clientX: e.clientX, clientY: e.clientY, target: e.target, preventDefault() {}};
-}
-function touchSample(sample, end = false) {
-  const touch = {identifier: sample.pointerId, clientX: sample.clientX, clientY: sample.clientY};
-  return {target: sample.target, touches: end ? [] : [touch], changedTouches: [touch], preventDefault() {}};
-}
-function forwardGameGesture(gesture, phase, sample) {
-  const scene = gesture.scene;
-  if (scene !== currentScene) return;
-  if (scene === gameRegistry.tetris) {
-    const touch = touchSample(sample, phase === 'end');
-    if (phase === 'start') {
-      scene.handleTouchStart(touch);
-      scene.touchStartTime = Date.now() - (performance.now() - gesture.time);
-    } else if (phase === 'move') scene.handleTouchMove(touch);
-    else scene.handleTouchEnd(touch);
-  } else if (scene === gameRegistry.danmaku) {
-    if (phase === 'start') scene.beginDrag(sample);
-    else if (phase === 'move') scene.moveDrag(sample);
-    else scene.pointerEndHandler(sample);
-  } else if (scene === gameRegistry.dino && phase === 'end' &&
-    Math.hypot(sample.clientX - gesture.x, sample.clientY - gesture.y) < 12) {
-    scene.handleInput({code: 'Space', repeat: false, preventDefault() {}});
-  }
-}
-function lockGameGesture(gesture) {
-  if (reelDragLayer) reelDragLayer.remove();
-  reelDragLayer = null;
-  gesture.mode = 'play';
-  forwardGameGesture(gesture, 'start', gesture.start);
-  for (const sample of gesture.moves) forwardGameGesture(gesture, 'move', sample);
-  gesture.moves = [];
+  if (slimeReturn) slimeReturn.cancel();
+  slimeReturn = null;
+  slimeStretch.hidden = true;
+  slimeStretch.classList.remove('ready');
+  reelSlime.classList.remove('pulling');
 }
 function previewReelDrag(gesture, dy) {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -189,85 +158,17 @@ function previewReelDrag(gesture, dy) {
   reelDragLayer.children[1].style.transform = `translateY(${direction * gameStage.clientHeight + offset}px)`;
   reelDragLayer.querySelector('.reel-preview-title').textContent = gameRegistry[key].name;
 }
-gameStage.addEventListener('pointerdown', e => {
-  if (!reelMode || e.target.closest('button, summary') ||
-    (e.pointerType === 'mouse' && e.button !== 0)) return;
-  e.preventDefault(); e.stopPropagation();
-  reelPointers.add(e.pointerId);
-  if (!e.isPrimary || reelPointers.size > 1) { cancelReelGesture(); return; }
-  if (e.target.closest('.game-help[open]')) {
-    reelHelpDrag = {id: e.pointerId, y: e.clientY, scroll: uiPanel.scrollTop};
-    gameStage.setPointerCapture(e.pointerId);
-    return;
-  }
-  cancelReelTransition();
-  reelGesture = {id: e.pointerId, x: e.clientX, y: e.clientY, key: selectedGameKey,
-    scene: currentScene, time: performance.now(), mode: 'pending', start: pointerSample(e), moves: []};
-  gameStage.setPointerCapture(e.pointerId);
-}, true);
-gameStage.addEventListener('pointermove', e => {
-  if (reelHelpDrag && reelHelpDrag.id === e.pointerId) {
-    e.preventDefault(); e.stopPropagation();
-    uiPanel.scrollTop = reelHelpDrag.scroll + reelHelpDrag.y - e.clientY;
-    return;
-  }
-  const gesture = reelGesture;
-  if (!reelMode || !gesture || gesture.id !== e.pointerId) return;
-  e.preventDefault(); e.stopPropagation();
-  const sample = pointerSample(e);
-  const dx = e.clientX - gesture.x, dy = e.clientY - gesture.y;
-  const elapsed = performance.now() - gesture.time;
-  if (gesture.mode === 'play') { forwardGameGesture(gesture, 'move', sample); return; }
-  if (gesture.mode === 'navigate') { previewReelDrag(gesture, dy); return; }
-  gesture.moves.push(sample);
-  // 横ドラッグとゆっくりした移動はゲームに確定。大きな上下フリックは切り替え。
-  if (Math.abs(dy) >= reelSwipeThreshold() && Math.abs(dy) > Math.abs(dx) * 1.4 && elapsed < 600) {
-    gesture.mode = 'navigate';
-    previewReelDrag(gesture, dy);
-  } else if ((Math.abs(dx) > 10 && Math.abs(dx) >= Math.abs(dy)) || (elapsed >= 220 && Math.abs(dy) / elapsed < 0.35)) {
-    lockGameGesture(gesture);
-  } else if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx) * 1.4) previewReelDrag(gesture, dy);
-}, true);
-gameStage.addEventListener('pointerup', e => {
-  reelPointers.delete(e.pointerId);
-  if (reelHelpDrag && reelHelpDrag.id === e.pointerId) {
-    e.preventDefault(); e.stopPropagation(); reelHelpDrag = null; return;
-  }
-  const gesture = reelGesture;
-  if (!reelMode || !gesture || gesture.id !== e.pointerId) return;
-  e.preventDefault(); e.stopPropagation();
-  const dx = e.clientX - gesture.x, dy = e.clientY - gesture.y;
-  const threshold = reelSwipeThreshold();
-  if (gesture.key === selectedGameKey && gesture.mode !== 'play' &&
-    (gesture.mode === 'navigate' || performance.now() - gesture.time < 600) && Math.abs(dy) >= threshold && Math.abs(dy) > Math.abs(dx) * 1.4) {
-    stepGame(dy < 0 ? 1 : -1, dy);
-  } else {
-    if (gesture.mode === 'navigate') { cancelReelGesture(); return; }
-    if (gesture.mode === 'pending') lockGameGesture(gesture);
-    forwardGameGesture(gesture, 'end', pointerSample(e));
-    cancelReelGesture();
-  }
-}, true);
-gameStage.addEventListener('pointercancel', e => {
-  reelPointers.delete(e.pointerId);
-  cancelReelGesture();
-}, true);
-for (const type of ['touchstart', 'touchmove', 'touchend', 'touchcancel']) {
-  gameStage.addEventListener(type, e => {
-    if (!reelMode || e.target.closest('button, summary')) return;
-    e.preventDefault(); e.stopPropagation();
-  }, {capture: true, passive: false});
-}
 window.addEventListener('blur', cancelReelTransition);
-window.addEventListener('blur', () => {cancelReelGesture(); reelPointers.clear();});
+window.addEventListener('blur', cancelReelGesture);
+window.addEventListener('resize', cancelReelGesture);
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {cancelReelTransition(); cancelReelGesture(); reelPointers.clear();}
+  if (document.hidden) {cancelReelTransition(); cancelReelGesture();}
 });
 let lastWheelEvent = -Infinity;
 let wheelUsed = false;
 let wheelDistance = 0;
 gameStage.addEventListener('wheel', e => {
-  if (!reelMode || !e.deltaY || e.ctrlKey) return;
+  if (!reelMode || !e.deltaY || e.ctrlKey || settingsDialog.open || reelGesture) return;
   if (e.target.closest('.game-help[open]')) return;
   e.preventDefault();
   const now = performance.now();
@@ -280,7 +181,7 @@ gameStage.addEventListener('wheel', e => {
   stepGame(wheelDistance > 0 ? 1 : -1);
 }, {passive: false});
 window.addEventListener('keydown', e => {
-  if (!reelMode || e.repeat || !['PageDown', 'PageUp'].includes(e.code)) return;
+  if (!reelMode || e.repeat || settingsDialog.open || !['PageDown', 'PageUp'].includes(e.code)) return;
   e.preventDefault();
   stepGame(e.code === 'PageDown' ? 1 : -1);
 });
