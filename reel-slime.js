@@ -6,12 +6,13 @@ function drawSlimeStretch(gesture, dx, dy) {
   const hy = Math.max(24, Math.min(innerHeight - rect.top - 24, base.y + dy * .85));
   const length = Math.max(1, Math.hypot(hx - base.x, hy - base.y));
   const ux = (hx - base.x) / length, uy = (hy - base.y) / length;
-  const point = (along, across) => `${base.x + ux * along - uy * across},${base.y + uy * along + ux * across}`;
+  const scale = reelSlime.offsetWidth / 64;
+  const point = (along, across) => `${base.x + ux * along - uy * across * scale},${base.y + uy * along + ux * across * scale}`;
   document.getElementById('slime-stretch-body').setAttribute('d',
     `M${point(0,24)} C${point(length*.3,9)} ${point(length*.7,9)} ${point(length,18)} C${point(length+30,32)} ${point(length+30,-32)} ${point(length,-18)} C${point(length*.7,-9)} ${point(length*.3,-9)} ${point(0,-24)} C${point(-30,-34)} ${point(-30,34)} ${point(0,24)}Z`);
-  document.getElementById('slime-face').setAttribute('transform', `translate(${hx},${hy})`);
+  document.getElementById('slime-face').setAttribute('transform', `translate(${hx},${hy}) scale(${scale})`);
   const label = document.getElementById('slime-direction');
-  const keys = Object.keys(gameRegistry), direction = dy < 0 ? 1 : -1;
+  const keys = reelGameKeys(), direction = dy < 0 ? 1 : -1;
   const key = keys[(keys.indexOf(gesture.key) + direction + keys.length) % keys.length];
   label.textContent = `${direction === 1 ? '次' : '前'}：${gameRegistry[key].name}`;
   label.style.left = `${Math.max(8, Math.min(rect.width - 160, hx - 60))}px`;
@@ -97,7 +98,23 @@ let slimeSide = 'left';
 try {
   const stored = JSON.parse(localStorage.getItem(settingsKey));
   if (stored && stored.slimeSide === 'right') slimeSide = 'right';
+  if (Array.isArray(stored?.games)) {
+    const games=Object.keys(gameRegistry).filter(key=>stored.games.includes(key));
+    if (games.length) reelSettings.games=games;
+  }
+  if (typeof stored?.keepProgress==='boolean') reelSettings.keepProgress=stored.keepProgress;
 } catch (_) {}
+function renderGameSlots() {
+  const slots=document.getElementById('game-slots');
+  slots.replaceChildren();
+  for(const [key,scene] of Object.entries(gameRegistry)) {
+    const label=document.createElement('label'), input=document.createElement('input');
+    input.type='checkbox';input.value=key;input.name='reel-game';input.checked=reelSettings.games.includes(key);
+    label.append(input,document.createTextNode(scene.name));slots.appendChild(label);
+  }
+  document.getElementById('keep-progress').checked=reelSettings.keepProgress;
+}
+renderGameSlots();
 function applySlimeSide(side) {
   cancelReelGesture();
   slimeSide = side === 'right' ? 'right' : 'left';
@@ -117,10 +134,23 @@ settingsDialog.addEventListener('close', () => {
   settingsGame = null;
 });
 settingsDialog.addEventListener('change', e => {
-  if (!e.target.matches('input[name="slime-side"]')) return;
-  applySlimeSide(e.target.value);
+  if (e.target.matches('input[name="slime-side"]')) applySlimeSide(e.target.value);
+  else if(e.target.matches('input[name="reel-game"]')) {
+    const games=[...document.querySelectorAll('input[name="reel-game"]:checked')].map(input=>input.value);
+    const slotsError=document.getElementById('slots-error');
+    slotsError.hidden=games.length>0;
+    if(!games.length){e.target.checked=true;return;}
+    reelSettings.games=games;
+    if(reelMode && !games.includes(selectedGameKey)) {selectGame(games[0],true);currentScene.pauseGame();}
+    for(const button of listEl.querySelectorAll('button')) button.disabled=reelMode && !games.includes(button.dataset.game);
+    const keys=reelMode?reelGameKeys():Object.keys(gameRegistry);
+    document.getElementById('reel-position').textContent=`${currentScene.name} · ${keys.indexOf(selectedGameKey)+1} / ${keys.length}`;
+  } else if(e.target.id==='keep-progress') {
+    reelSettings.keepProgress=e.target.checked;
+    if(!reelSettings.keepProgress) for(const scene of Object.values(gameRegistry)) scene.savedReelProgress=null;
+  } else return;
   const error = document.getElementById('settings-error');
-  try { localStorage.setItem(settingsKey, JSON.stringify({slimeSide})); error.hidden = true; }
+  try { localStorage.setItem(settingsKey, JSON.stringify({slimeSide,...reelSettings})); error.hidden = true; }
   catch (_) { error.hidden = false; }
 });
 window.addEventListener('keydown', e => { if (settingsDialog.open) e.stopPropagation(); }, true);

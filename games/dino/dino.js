@@ -27,13 +27,17 @@ class DinoGameScene extends GameScene {
     this.showUI(`
       <h2>${this.name}</h2>
       <details class="game-help"><summary>操作方法</summary>
-      <p>Space：ジャンプ<br>スマホ：ジャンプボタン<br>P / Esc：一時停止</p>
+      <p>Space：ジャンプ<br>スマホ：ジャンプボタン<br>P / Esc：一時停止<br>一時停止中：画面タップで再開</p>
       </details>
       <div class="btn-group">
         <button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button>
       </div>
       ${this.getRecordsHTML()}
     `);
+  }
+
+  attachListeners() {
+    window.addEventListener('keydown', this.keydownHandler);
   }
 
   startGame() {
@@ -43,7 +47,7 @@ class DinoGameScene extends GameScene {
     this.obstacles = []; this.frame = 0; this.score = 0;
     this.accumulator = 0; this.lastTime = performance.now();
     this.isActive = true;
-    window.addEventListener('keydown', this.keydownHandler);
+    this.attachListeners();
     this.reqId = requestAnimationFrame(t => this.loop(t));
   }
 
@@ -142,11 +146,7 @@ class DinoGameScene extends GameScene {
     });
 
     ctx.fillStyle = '#fff'; ctx.font = '20px Monospace'; ctx.textAlign='left'; ctx.fillText(`SCORE: ${this.score}`, 20, 30);
-    if (this.isPaused) {
-      ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 28px Arial'; ctx.textAlign = 'center';
-      ctx.fillText('一時停止', canvas.width / 2, canvas.height / 2);
-    }
+
   }
 }
 

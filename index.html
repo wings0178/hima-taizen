@@ -31,6 +31,7 @@
   <div id="ui-panel" class="ui-panel">
     <div id="ui-content"></div>
   </div>
+  <div id="pause-overlay" class="pause-overlay" aria-live="polite" hidden><strong>一時停止</strong><span>画面をタップして再開</span></div>
   <div id="slime-stretch" hidden aria-hidden="true">
     <svg><path id="slime-stretch-body" class="slime-body"/><g id="slime-face"><circle cx="-7" cy="-2" r="3"/><circle cx="7" cy="-2" r="3"/><path class="slime-mouth" d="M-4 5Q0 9 4 5"/></g></svg>
     <span id="slime-direction"></span>
@@ -45,7 +46,6 @@
       <circle cx="25" cy="37" r="3"/><circle cx="41" cy="37" r="3"/>
       <path class="slime-mouth" d="M29 44Q33 48 37 44"/>
     </svg>
-    <span class="slime-arrows" aria-hidden="true">↕</span>
   </button>
   <div id="virtual-controls">
     <div id="v-dpad" class="v-section">
@@ -67,12 +67,22 @@
 <dialog id="settings-dialog" aria-labelledby="settings-title">
   <h2 id="settings-title">設定</h2>
   <fieldset>
+    <legend>ゲームスロット</legend>
+    <div id="game-slots"></div>
+    <p id="slots-error" role="status" hidden>ゲームを1つ以上選んでください。</p>
+  </fieldset>
+  <fieldset>
+    <legend>ショートモード</legend>
+    <label><input id="keep-progress" type="checkbox" checked> 途中の状態を残す</label>
+    <p>戻ったゲームは一時停止で表示します。進行は再読み込みすると消えます。</p>
+  </fieldset>
+  <fieldset>
     <legend>スライムの位置</legend>
     <label><input type="radio" name="slime-side" value="left" checked> 左下</label>
     <label><input type="radio" name="slime-side" value="right"> 右下</label>
   </fieldset>
   <p>このブラウザーに保存します。</p>
-  <p id="settings-error" role="status" hidden>このブラウザーでは設定を保存できません。今回の位置変更は有効です。</p>
+  <p id="settings-error" role="status" hidden>このブラウザーでは設定を保存できません。今回の変更は有効です。</p>
   <form method="dialog"><button class="ui-btn btn-secondary">閉じる</button></form>
 </dialog>
 

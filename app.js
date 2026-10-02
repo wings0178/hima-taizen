@@ -15,6 +15,8 @@ let reelGesture = null;
 let reelTransition = null;
 let reelDragLayer = null;
 let slimeReturn = null;
+let reelSettings = {games:Object.keys(gameRegistry),keepProgress:true};
+function reelGameKeys() { return Object.keys(gameRegistry).filter(key=>reelSettings.games.includes(key)); }
 function renderSidebar() {
   listEl.innerHTML = '';
   for (const [key, scene] of Object.entries(gameRegistry)) {
@@ -28,25 +30,32 @@ function renderSidebar() {
     listEl.appendChild(li);
   }
 }
-function selectGame(key, autoStart = reelMode) {
+function selectGame(key, autoStart = reelMode, preserve = reelMode && reelSettings.keepProgress) {
+  if (reelMode && !reelGameKeys().includes(key)) key=reelGameKeys()[0];
   const nextScene = gameRegistry[key];
   if (!nextScene) return;
   cancelReelTransition();
   cancelReelGesture();
-  if (currentScene) currentScene.cleanup();
+  if (currentScene) {
+    if (preserve && currentScene.isActive) currentScene.suspendForReel();
+    else currentScene.cleanup();
+  }
+  pauseTap = null;
   selectedGameKey = key;
   currentScene = nextScene;
   for (const button of listEl.querySelectorAll('button')) {
     const active = button.dataset.game === key;
     button.parentElement.classList.toggle('active', active);
     button.setAttribute('aria-pressed', String(active));
+    button.disabled = reelMode && !reelGameKeys().includes(button.dataset.game);
     if (active && window.matchMedia('(max-width: 768px)').matches) {
       listEl.scrollLeft = button.parentElement.offsetLeft - listEl.offsetLeft - 10;
     }
   }
-  if (autoStart) currentScene.startGame();
+  if (autoStart && preserve && currentScene.savedReelProgress) currentScene.restoreReelProgress();
+  else if (autoStart) currentScene.startGame();
   else currentScene.init();
-  const keys = Object.keys(gameRegistry);
+  const keys = reelMode ? reelGameKeys() : Object.keys(gameRegistry);
   document.getElementById('reel-position').textContent = `${currentScene.name} · ${keys.indexOf(key) + 1} / ${keys.length}`;
 }
 function setReelMode(enabled) {
@@ -63,8 +72,8 @@ function setReelMode(enabled) {
 }
 function stepGame(direction, offset = 0) {
   if (!reelMode) return;
-  const keys = Object.keys(gameRegistry);
-  if (!keys.length) return;
+  const keys = reelGameKeys();
+  if (keys.length < 2) return;
   const animate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const outgoing = animate ? snapshotGameSurface() : null;
   const index = (keys.indexOf(selectedGameKey) + direction + keys.length) % keys.length;
@@ -84,6 +93,8 @@ function snapshotGameSurface() {
     snapshot.height = canvas.height;
     snapshot.getContext('2d').drawImage(canvas, 0, 0);
     preview.appendChild(snapshot);
+    const pause = document.getElementById('pause-overlay');
+    if (!pause.hidden) {const copy=pause.cloneNode(true);copy.removeAttribute('id');copy.removeAttribute('aria-live');preview.appendChild(copy);}
   } else {
     const label = document.createElement('div');
     label.className = 'reel-preview-title';
@@ -151,7 +162,7 @@ function previewReelDrag(gesture, dy) {
     reelDragLayer = layer;
   }
   const direction = dy < 0 ? 1 : -1;
-  const keys = Object.keys(gameRegistry);
+  const keys = reelGameKeys();
   const key = keys[(keys.indexOf(gesture.key) + direction + keys.length) % keys.length];
   const offset = Math.max(-gameStage.clientHeight * 0.8, Math.min(gameStage.clientHeight * 0.8, dy));
   reelDragLayer.children[0].style.transform = `translateY(${offset}px)`;

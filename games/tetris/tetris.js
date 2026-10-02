@@ -55,7 +55,7 @@ class TetrisGameScene extends GameScene {
       <p>
       【←/→】移動 【↑】回転 【↓】ソフトドロップ<br>
       【Space】ハードドロップ 【Shift / C】ホールド<br>
-      【P / Esc】ポーズ<br>
+      【P / Esc】一時停止<br>一時停止中：画面タップで再開<br>
       <span style="color:var(--accent-color);font-size:0.9rem;">
       スマホ：ゲーム画面で操作<br>
       タップ：回転<br>
@@ -71,6 +71,14 @@ class TetrisGameScene extends GameScene {
       </div>
       ${this.getRecordsHTML()}
     `);
+  }
+
+  attachListeners() {
+    window.addEventListener('keydown', this.keydownHandler);
+    this.touchTarget.addEventListener('touchstart', this.touchStartHandler, {passive: false});
+    this.touchTarget.addEventListener('touchmove', this.touchMoveHandler, {passive: false});
+    this.touchTarget.addEventListener('touchend', this.touchEndHandler, {passive: false});
+    this.touchTarget.addEventListener('touchcancel', this.touchCancelHandler);
   }
 
   startGame() {
@@ -89,11 +97,7 @@ class TetrisGameScene extends GameScene {
     this.isPaused = false;
     this.isGameOver = false;
 
-    window.addEventListener('keydown', this.keydownHandler);
-    this.touchTarget.addEventListener('touchstart', this.touchStartHandler, {passive: false});
-    this.touchTarget.addEventListener('touchmove', this.touchMoveHandler, {passive: false});
-    this.touchTarget.addEventListener('touchend', this.touchEndHandler, {passive: false});
-    this.touchTarget.addEventListener('touchcancel', this.touchCancelHandler);
+    this.attachListeners();
 
     this.spawnPiece();
     this.lastTime = performance.now();
@@ -253,17 +257,7 @@ class TetrisGameScene extends GameScene {
 
   togglePause() {
     if (!this.isActive || this.isGameOver) return;
-    this.isPaused = !this.isPaused;
-    this.gestureActive = false;
-    cancelAnimationFrame(this.reqId);
-    this.reqId = null;
-    if (!this.isPaused) {
-      this.lastTime = performance.now();
-      this.reqId = requestAnimationFrame((t) => this.loop(t));
-    } else {
-      this.draw();
-    }
-    syncPauseButton();
+    super.togglePause();
   }
 
   handleInput(e) {
@@ -304,21 +298,6 @@ class TetrisGameScene extends GameScene {
         return;
       }
 
-      if (this.isPaused) {
-        if (touchX > canvas.width/2 - 60 && touchX < canvas.width/2 + 60 && touchY > canvas.height/2 + 20 && touchY < canvas.height/2 + 60) {
-          this.quitGame();
-        } else {
-          this.togglePause();
-        }
-        e.preventDefault();
-        return;
-      }
-    } else {
-      if (this.isPaused) {
-        this.togglePause();
-        e.preventDefault();
-        return;
-      }
     }
 
     if (this.isPaused) return;
@@ -479,20 +458,5 @@ class TetrisGameScene extends GameScene {
     ctx.strokeStyle = '#555'; ctx.lineWidth = 2;
     ctx.strokeRect(this.boardOffset * this.blockSize, 0, this.cols * this.blockSize, this.rows * this.blockSize);
 
-    if (this.isPaused) {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 30px Arial'; ctx.textAlign = 'center';
-      ctx.fillText('PAUSED', canvas.width / 2, canvas.height / 2 - 20);
-
-      ctx.fillStyle = '#ff4757';
-      ctx.fillRect(canvas.width / 2 - 60, canvas.height / 2 + 20, 120, 40);
-      ctx.fillStyle = '#fff'; ctx.font = '16px Arial';
-      ctx.fillText('タイトルへ戻る', canvas.width / 2, canvas.height / 2 + 45);
-      
-      ctx.font = '12px Arial'; ctx.fillStyle = '#ccc';
-      ctx.fillText('※画面のどこかをタップで再開', canvas.width / 2, canvas.height / 2 + 85);
-    }
   }
 }

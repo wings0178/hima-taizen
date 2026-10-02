@@ -14,6 +14,7 @@ class GameScene {
     this.isActive = false;
     this.isPaused = false;
     this.reqId = null;
+    this.savedReelProgress = null;
   }
   init() { this.showTitle(); }
   cleanup() {
@@ -34,14 +35,17 @@ class GameScene {
   showUI(html) {
     if (typeof cancelReelTransition === 'function') cancelReelTransition();
     this.cleanup();
+    this.savedReelProgress = null;
     canvas.style.display = 'none';
     uiPanel.style.display = 'block';
     uiContent.innerHTML = html;
     document.getElementById('play-controls').hidden = true;
     document.getElementById('virtual-controls').classList.remove('playing');
+    syncPauseButton();
   }
   hideUI() {
     this.cleanup();
+    this.savedReelProgress = null;
     uiPanel.style.display = 'none';
     canvas.style.display = 'block';
     this.updateMobileUI();
@@ -59,6 +63,9 @@ class GameScene {
     cancelAnimationFrame(this.reqId);
     this.reqId = null;
     if (this.keys) this.keys.clear();
+    releaseVirtualKeys();
+    this.gestureActive = false;
+    this.drag = null;
     if (this.isPaused) this.draw();
     else {
       this.lastTime = performance.now();
@@ -69,6 +76,31 @@ class GameScene {
   pauseGame() {
     if (this.isActive && !this.isPaused) this.togglePause();
   }
+  suspendForReel() {
+    if (!this.isActive) return;
+    const dimensions = {width:canvas.width, height:canvas.height};
+    this.cleanup();
+    this.savedReelProgress = dimensions;
+  }
+  restoreReelProgress() {
+    const dimensions = this.savedReelProgress;
+    if (!dimensions) return;
+    this.cleanup();
+    this.savedReelProgress = null;
+    uiPanel.style.display = 'none';
+    canvas.style.display = 'block';
+    canvas.width = dimensions.width;
+    canvas.height = dimensions.height;
+    this.updateMobileUI();
+    if (this.updateBombButton) this.updateBombButton();
+    document.getElementById('play-controls').hidden = false;
+    this.isActive = true;
+    this.isPaused = true;
+    this.lastTime = performance.now();
+    this.attachListeners();
+    this.draw();
+    syncPauseButton();
+  }
   showTitle() {}
   startGame() {}
   showResult() {}
@@ -78,10 +110,12 @@ class GameScene {
     this.reqId = null;
   }
   removeListeners() {}
+  attachListeners() {}
 }
 function syncPauseButton() {
   if (typeof cancelReelTransition === 'function') cancelReelTransition();
   document.getElementById('pause-game').textContent = currentScene && currentScene.isPaused ? '再開' : '一時停止';
+  document.getElementById('pause-overlay').hidden = !(currentScene && currentScene.isActive && currentScene.isPaused);
 }
 function varColor(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -137,3 +171,26 @@ function pauseHiddenGame() {
 }
 window.addEventListener('blur', pauseHiddenGame);
 document.addEventListener('visibilitychange', () => { if (document.hidden) pauseHiddenGame(); });
+
+// 再開するタップを移動・回転・ジャンプ等のゲーム入力へ重ねて渡さない。
+let pauseTap = null;
+const pauseStage = document.getElementById('game-stage');
+pauseStage.addEventListener('pointerdown', e => {
+  if (!currentScene?.isActive || !currentScene.isPaused || e.target.closest('button') || (e.pointerType==='mouse' && e.button!==0)) return;
+  e.preventDefault();e.stopPropagation();
+  if (!e.isPrimary) {pauseTap=null;return;}
+  pauseTap={id:e.pointerId,x:e.clientX,y:e.clientY,scene:currentScene};
+  pauseStage.setPointerCapture(e.pointerId);
+}, true);
+pauseStage.addEventListener('pointerup', e => {
+  if (!pauseTap || pauseTap.id!==e.pointerId) return;
+  e.preventDefault();e.stopPropagation();
+  const tap=pauseTap;pauseTap=null;
+  if (tap.scene===currentScene && currentScene.isActive && currentScene.isPaused && Math.hypot(e.clientX-tap.x,e.clientY-tap.y)<12) currentScene.togglePause();
+}, true);
+pauseStage.addEventListener('pointercancel',()=>{pauseTap=null;});
+pauseStage.addEventListener('lostpointercapture',()=>{pauseTap=null;});
+for(const type of ['touchstart','touchmove','touchend']) pauseStage.addEventListener(type,e=>{
+  if (currentScene?.isPaused || pauseTap) {e.preventDefault();e.stopPropagation();}
+},{capture:true,passive:false});
+window.addEventListener('blur',()=>{pauseTap=null;});

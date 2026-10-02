@@ -16,13 +16,23 @@ class DanmakuGameScene extends GameScene {
       <details class="game-help"><summary>操作方法</summary>
       <p>方向キー / WASD：移動　Shift：低速<br>
       スマホ：ドラッグで移動　射撃は自動<br>
-      X / ボムボタン：弾を消去<br>P / Esc：一時停止<br>
+      X / ボムボタン：弾を消去<br>P / Esc：一時停止<br>一時停止中：画面タップで再開<br>
       残機3・ボム3。3つの弾幕を突破するとクリア。
       <span class="reel-input-help">スライムを上下に引くとゲーム切り替え</span></p>
       </details>
       <div class="btn-group"><button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button></div>
     `);
   }
+  attachListeners() {
+    window.addEventListener('keydown', this.keydownHandler);
+    window.addEventListener('keyup', this.keyupHandler);
+    canvas.addEventListener('pointerdown', this.pointerDownHandler);
+    canvas.addEventListener('pointermove', this.pointerMoveHandler);
+    canvas.addEventListener('pointerup', this.pointerEndHandler);
+    canvas.addEventListener('pointercancel', this.pointerEndHandler);
+    canvas.addEventListener('lostpointercapture', this.pointerEndHandler);
+  }
+
   startGame() {
     this.hideUI();
     canvas.width = 400;
@@ -45,13 +55,7 @@ class DanmakuGameScene extends GameScene {
     this.isActive = true;
     this.lastTime = performance.now();
     this.updateBombButton();
-    window.addEventListener('keydown', this.keydownHandler);
-    window.addEventListener('keyup', this.keyupHandler);
-    canvas.addEventListener('pointerdown', this.pointerDownHandler);
-    canvas.addEventListener('pointermove', this.pointerMoveHandler);
-    canvas.addEventListener('pointerup', this.pointerEndHandler);
-    canvas.addEventListener('pointercancel', this.pointerEndHandler);
-    canvas.addEventListener('lostpointercapture', this.pointerEndHandler);
+    this.attachListeners();
     this.reqId = requestAnimationFrame(t => this.loop(t));
   }
   newEnemy() {
@@ -241,10 +245,7 @@ class DanmakuGameScene extends GameScene {
     ctx.textAlign = 'right'; ctx.fillText(`${this.score} pt`, 380, 29);
     if (this.flash > 0) { ctx.fillStyle = `rgba(255,255,255,${this.flash})`; ctx.fillRect(0, 0, 400, 600); }
     this.drawEnemyMarker();
-    if (this.isPaused) {
-      ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, 400, 600);
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 28px Arial'; ctx.textAlign = 'center'; ctx.fillText('一時停止', 200, 300);
-    }
+
   }
   drawEnemyMarker() {
     // 敵の横位置を下端へ投影する。ゲームの座標・当たり判定は変更しない。

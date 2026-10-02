@@ -59,6 +59,7 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
   });
   page.on('pageerror', e => errors.push(e.message));
   page.on('console', msg => {if(msg.type()==='error') errors.push(msg.text());});
+  await page.addInitScript(() => !localStorage.getItem('hima-taizen-settings-v1') && localStorage.setItem('hima-taizen-settings-v1', JSON.stringify({slimeSide:'left',keepProgress:false})));
   await page.goto(base);
   await check('3 games and original title', async () => {
     assert.equal(await page.locator('.game-item button').count(),3);
@@ -226,6 +227,7 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
   const mobile = await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:1});
   const phone = await mobile.newPage();
   phone.on('pageerror', e => errors.push(e.message));
+  await phone.addInitScript(() => !localStorage.getItem('hima-taizen-settings-v1') && localStorage.setItem('hima-taizen-settings-v1',JSON.stringify({slimeSide:'left',keepProgress:false})));
   await phone.goto(base);
   await check('mobile title, start buttons and no overflow at 320/390/768', async () => {
     for(const size of [{width:320,height:568},{width:390,height:844},{width:768,height:1024}]) {
@@ -581,15 +583,146 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
         startGame(){this.hideUI();canvas.width=1200;canvas.height=400;this.isActive=true;this.draw();}
         draw(){ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);}
       }
-      gameRegistry.layoutTest=new LayoutScene();
+      gameRegistry.layoutTest=new LayoutScene();reelSettings.games.push('layoutTest');
       try {
         selectGame('layoutTest',true);
         return {before,after:geometry(),pad:getComputedStyle(document.getElementById('v-dpad')).display,bomb:document.getElementById('bomb-game').hidden};
-      } finally {selectGame('dino',true);delete gameRegistry.layoutTest;renderSidebar();selectGame('dino',true);}
+      } finally {selectGame('dino',true);delete gameRegistry.layoutTest;reelSettings.games=reelSettings.games.filter(key=>key!=='layoutTest');renderSidebar();selectGame('dino',true);}
     });
     assert.deepEqual(result.after,result.before);
     assert.equal(result.pad,'flex');assert.equal(result.bomb,false);
   });
+
+  const progressContext=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+  const progress=await progressContext.newPage();
+  progress.on('pageerror',e=>errors.push(e.message));
+  await progress.addInitScript(()=>{
+    const request=window.requestAnimationFrame.bind(window),cancel=window.cancelAnimationFrame.bind(window);
+    window.pendingFrames=new Set();
+    window.requestAnimationFrame=callback=>{const id=request(t=>{window.pendingFrames.delete(id);callback(t);});window.pendingFrames.add(id);return id;};
+    window.cancelAnimationFrame=id=>{window.pendingFrames.delete(id);cancel(id);};
+  });
+  await progress.goto(base);
+  const readProgress=()=>progress.evaluate(()=>{
+    const fields={dino:['dino','obstacles','frame','score','accumulator'],tetris:['board','piece','bag','nextPieceIndex','holdPieceIndex','hasHeld','score','dropCounter'],danmaku:['player','enemy','wave','time','lives','bombs','score','shots','bullets','invincible','shotTimer','bulletTimer','flash']};
+    return Object.fromEntries(fields[selectedGameKey].map(key=>[key,currentScene[key]]));
+  });
+  await check('game slots filter both reel directions, protect last slot and persist settings',async()=>{
+    assert.equal(await progress.evaluate(()=>reelSettings.keepProgress),true);
+    await progress.locator('#settings-open').click();
+    await progress.locator('input[name=reel-game][value=tetris]').uncheck();
+    await progress.locator('#settings-dialog').screenshot({path:path.join(output,'game-slots-settings.png')});
+    await progress.getByRole('button',{name:'閉じる',exact:true}).click();
+    await progress.locator('#reel-toggle').click();
+    await touchDrag(progress,'#reel-slime',0,-150);assert.equal((await scene(progress)).key,'danmaku');
+    assert.ok((await progress.locator('#reel-position').textContent()).includes('2 / 2'));
+    await progress.evaluate(()=>stepGame(1));assert.equal((await scene(progress)).key,'dino');
+    await progress.waitForFunction(()=>!reelTransition);const stage=await progress.locator('#game-stage').boundingBox();await progress.mouse.move(stage.x+stage.width/2,stage.y+stage.height/2);await progress.mouse.wheel(0,-120);assert.equal((await scene(progress)).key,'danmaku');
+    await progress.locator('#settings-open').click();
+    await progress.locator('input[name=reel-game][value=danmaku]').uncheck();
+    assert.equal((await scene(progress)).key,'dino');assert.equal((await scene(progress)).paused,true);
+    await progress.locator('input[name=reel-game][value=dino]').click();
+    assert.equal(await progress.locator('input[name=reel-game][value=dino]').isChecked(),true);
+    assert.equal(await progress.locator('#slots-error').isVisible(),true);
+    await progress.getByRole('button',{name:'閉じる',exact:true}).click();
+    const state=await readProgress();await progress.evaluate(()=>stepGame(1));assert.deepEqual(await readProgress(),state);
+    await progress.locator('#reel-toggle').click();
+    assert.equal(await progress.locator('[data-game=tetris]').isEnabled(),true);
+    await progress.reload();assert.deepEqual(await progress.evaluate(()=>reelSettings.games),['dino']);
+    await progress.locator('#settings-open').click();
+    for(const key of ['tetris','danmaku'])await progress.locator('input[name=reel-game][value='+key+']').check();
+    await progress.getByRole('button',{name:'閉じる',exact:true}).click();
+  });
+  await check('all games preserve exact interrupted progress, return paused and resume only on a separate tap',async()=>{
+    await progress.locator('#reel-toggle').click();
+    for(const key of ['dino','tetris','danmaku']){
+      await progress.evaluate(key=>{selectGame(key,true,false);currentScene.pauseGame();},key);
+      await progress.evaluate(()=>{
+        if(selectedGameKey==='dino'){currentScene.score=47;currentScene.frame=281;currentScene.obstacles=[{x:470,y:260,w:20,h:40,type:'cactus'}];}
+        if(selectedGameKey==='tetris'){currentScene.holdPiece();currentScene.hardDrop();currentScene.piece.x=2;currentScene.dropCounter=345;}
+        if(selectedGameKey==='danmaku'){currentScene.player.x=123;currentScene.bombs=2;currentScene.lives=2;currentScene.update(.2);}
+        currentScene.draw();
+      });
+      const saved=await readProgress();
+      await touchDrag(progress,'#reel-slime',0,-150);await sleep(300);
+      await progress.evaluate(()=>{stepGame(1);stepGame(1);});
+      assert.equal((await scene(progress)).key,key);assert.equal((await scene(progress)).paused,true);
+      await assertOneLoop(progress);assert.deepEqual(await readProgress(),saved);
+      await sleep(150);assert.deepEqual(await readProgress(),saved);
+      assert.equal(await progress.locator('#pause-overlay').isVisible(),true);
+      // Complete one native resume tap while freezing the next frame, then inspect before physics runs.
+      await progress.evaluate(()=>{window.resumeRequest=window.requestAnimationFrame;window.requestAnimationFrame=()=>0;});
+      await progress.locator('#game-stage').tap({position:{x:15,y:15}});
+      assert.equal((await scene(progress)).paused,false);
+      assert.deepEqual(await readProgress(),saved);
+      await progress.evaluate(()=>{window.requestAnimationFrame=window.resumeRequest;currentScene.pauseGame();currentScene.togglePause();});
+      await assertOneLoop(progress);
+      if(key==='tetris'){const x=await progress.evaluate(()=>currentScene.piece.x);await progress.keyboard.press('ArrowRight');assert.equal(await progress.evaluate(()=>currentScene.piece.x),x+1);}
+      if(key==='danmaku'){await progress.keyboard.press('KeyX');assert.equal(await progress.evaluate(()=>currentScene.bombs),1);}
+      if(key==='dino'){await progress.keyboard.press('Space');assert.ok(await progress.evaluate(()=>currentScene.dino.vy<0));}
+      await progress.evaluate(()=>currentScene.pauseGame());
+    }
+    await progress.screenshot({path:path.join(output,'reel-progress-paused.png')});
+    for(let i=0;i<90;i++){await progress.evaluate(()=>stepGame(1));await assertOneLoop(progress);}
+    assert.equal(await progress.evaluate(()=>Object.values(gameRegistry).filter(s=>s.isActive).length),1);
+  });
+  await check('turning progress off resets on return; restart and result never resurrect old progress',async()=>{
+    await progress.locator('#settings-open').click();await progress.locator('#keep-progress').uncheck();
+    assert.equal(await progress.evaluate(()=>Object.values(gameRegistry).every(s=>!s.savedReelProgress)),true);
+    await progress.getByRole('button',{name:'閉じる',exact:true}).click();
+    await progress.evaluate(()=>{selectGame('tetris',true);currentScene.score=987;stepGame(1);stepGame(1);stepGame(1);currentScene.pauseGame();});
+    assert.equal(await progress.evaluate(()=>currentScene.score),0);await assertOneLoop(progress);
+    await progress.locator('#settings-open').click();await progress.locator('#keep-progress').check();
+    await progress.getByRole('button',{name:'閉じる',exact:true}).click();
+    await progress.evaluate(()=>{currentScene.score=123;stepGame(1);stepGame(1);stepGame(1);currentScene.startGame();currentScene.pauseGame();});
+    assert.equal(await progress.evaluate(()=>currentScene.score),0);
+    await progress.evaluate(()=>{currentScene.score=456;currentScene.showResult();stepGame(1);stepGame(1);stepGame(1);currentScene.pauseGame();});
+    assert.equal(await progress.evaluate(()=>currentScene.score),0);
+    await progress.reload();assert.equal(await progress.evaluate(()=>reelSettings.keepProgress),true);
+    assert.equal(await progress.evaluate(()=>Object.values(gameRegistry).every(s=>!s.savedReelProgress)),true);
+  });
+  await check('larger slime has no arrow and does not cover controls on either side',async()=>{
+    await progress.evaluate(()=>setReelMode(true));
+    assert.equal(await progress.locator('.slime-arrows').count(),0);
+    for(const size of [{width:320,height:568},{width:390,height:844},{width:640,height:360},{width:844,height:390}]){
+      await progress.setViewportSize(size);
+      for(const side of ['left','right'])for(const key of ['dino','tetris','danmaku']){
+        await progress.evaluate(({side,key})=>{applySlimeSide(side);selectGame(key,true,false);currentScene.pauseGame();},{side,key});
+        const slime=await progress.locator('#reel-slime').boundingBox();assert.equal(slime.width,80);assert.equal(slime.height,80);
+        for(const button of await progress.locator('#virtual-controls .v-btn').all()){
+          if(!await button.isVisible())continue;const box=await button.boundingBox();
+          assert.ok(box.x+box.width<=slime.x+1 || box.x>=slime.x+slime.width-1 || box.y+box.height<=slime.y+1 || box.y>=slime.y+slime.height-1,JSON.stringify({size,side,key,box,slime}));
+        }
+      }
+    }
+  });
+
+  await check('pause taps on the game image and mouse clicks resume all games without an extra action',async()=>{
+    await progress.setViewportSize({width:390,height:844});
+    for(const key of ['dino','tetris','danmaku'])for(const input of ['touch','mouse']){
+      await progress.evaluate(key=>{selectGame(key,true,false);currentScene.pauseGame();},key);
+      const saved=await readProgress();
+      await progress.evaluate(()=>{window.resumeRequest=window.requestAnimationFrame;window.requestAnimationFrame=()=>0;});
+      if(input==='touch')await progress.locator('#game-canvas').tap();else await progress.locator('#game-canvas').click();
+      assert.equal((await scene(progress)).paused,false);assert.deepEqual(await readProgress(),saved);
+      await progress.evaluate(()=>{window.requestAnimationFrame=window.resumeRequest;currentScene.pauseGame();});
+    }
+  });
+  await check('legacy and invalid saved settings use valid slots without losing the slime side',async()=>{
+    const context=await browser.newContext();
+    for(const value of [{slimeSide:'right'},{slimeSide:'right',games:['removed-game'],keepProgress:false},{games:[]},'broken-json']){
+      const legacy=await context.newPage();
+      await legacy.addInitScript(value=>localStorage.setItem('hima-taizen-settings-v1',typeof value==='string'?value:JSON.stringify(value)),value);
+      await legacy.goto(base);
+      assert.deepEqual(await legacy.evaluate(()=>reelGameKeys()),['dino','tetris','danmaku']);
+      if(value.slimeSide==='right')assert.equal(await legacy.locator('#reel-slime').getAttribute('data-side'),'right');
+      assert.equal(await legacy.locator('input[name=reel-game]:checked').count(),3);await legacy.close();
+    }
+    await context.close();
+  });
+
+  await progressContext.close();
+
   assert.deepEqual(errors,[]);
   report.push('No JavaScript errors');
   fs.writeFileSync(path.join(output, 'verification.json'),JSON.stringify({url:base,checks:report,errors},null,2));
