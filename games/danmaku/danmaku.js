@@ -13,11 +13,12 @@ class DanmakuGameScene extends GameScene {
   showTitle() {
     this.showUI(`
       <h2>${this.name}</h2>
-      <h3>操作方法</h3>
+      <details class="game-help"><summary>操作方法</summary>
       <p>方向キー / WASD：移動　Shift：低速<br>
       スマホ：ドラッグで移動　射撃は自動<br>
       X / ボムボタン：弾を消去<br>P / Esc：一時停止<br>
       残機3・ボム3。3つの弾幕を突破するとクリア。</p>
+      </details>
       <div class="btn-group"><button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button></div>
     `);
   }
@@ -238,10 +239,28 @@ class DanmakuGameScene extends GameScene {
     ctx.fillText(`残機 ${this.lives}   WAVE ${this.wave} / 3`, 20, 29);
     ctx.textAlign = 'right'; ctx.fillText(`${this.score} pt`, 380, 29);
     if (this.flash > 0) { ctx.fillStyle = `rgba(255,255,255,${this.flash})`; ctx.fillRect(0, 0, 400, 600); }
+    this.drawEnemyMarker();
     if (this.isPaused) {
       ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, 400, 600);
       ctx.fillStyle = '#fff'; ctx.font = 'bold 28px Arial'; ctx.textAlign = 'center'; ctx.fillText('一時停止', 200, 300);
     }
+  }
+  drawEnemyMarker() {
+    // 敵の横位置を下端へ投影する。ゲームの座標・当たり判定は変更しない。
+    ctx.save();
+    const x = this.enemy.x;
+    const y = canvas.height - 6;
+    ctx.fillStyle = '#ff4757';
+    ctx.strokeStyle = '#111';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, y - 7);
+    ctx.lineTo(x - 6, y + 3);
+    ctx.lineTo(x + 6, y + 3);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+    ctx.restore();
   }
   showResult(clear = false) {
     this.saveRecord(this.score);

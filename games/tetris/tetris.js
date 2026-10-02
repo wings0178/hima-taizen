@@ -51,7 +51,7 @@ class TetrisGameScene extends GameScene {
   showTitle() {
     this.showUI(`
       <h2>${this.name}</h2>
-      <h3>操作方法</h3>
+      <details class="game-help"><summary>操作方法</summary>
       <p>
       【←/→】移動 【↑】回転 【↓】ソフトドロップ<br>
       【Space】ハードドロップ 【Shift / C】ホールド<br>
@@ -64,6 +64,7 @@ class TetrisGameScene extends GameScene {
       上フリック：ホールド
       </span>
       </p>
+      </details>
       <div class="btn-group">
         <button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button>
       </div>

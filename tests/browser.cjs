@@ -63,6 +63,21 @@ async function touchDrag(page, selector, dx, dy) {
     await assertOneLoop(page);
     await page.screenshot({path:path.join(output, 'desktop.png')});
   });
+  await check('instructions are folded and open by click or keyboard in all games', async () => {
+    for(const key of ['dino','tetris','danmaku']) {
+      await page.locator(`[data-game=${key}]`).click();
+      const help = page.locator('.game-help');
+      assert.equal(await help.getAttribute('open'),null);
+      assert.equal(await help.locator('p').isVisible(),false);
+      await help.locator('summary').click();
+      assert.equal(await help.locator('p').isVisible(),true);
+      assert.equal((await scene(page)).active,false);
+      await help.locator('summary').focus();
+      await page.keyboard.press('Space');
+      assert.equal(await help.locator('p').isVisible(),false);
+    }
+    await page.locator('[data-game=dino]').click();
+  });
   await check('dino jump, pause, repeated resume and restart', async () => {
     await page.getByRole('button',{name:'ゲーム開始',exact:true}).click();
     await page.keyboard.press('Space');
@@ -103,6 +118,7 @@ async function touchDrag(page, selector, dx, dy) {
     assert.ok(await page.evaluate(() => Object.values(gameRegistry).filter(s=>s.isActive).length===1));
     await page.keyboard.press('PageDown');
     assert.equal((await scene(page)).key,'danmaku');
+    await page.waitForFunction(()=>!reelTransition);
     await page.screenshot({path:path.join(output, 'danmaku-desktop.png')});
     await page.keyboard.press('PageDown');
     assert.equal((await scene(page)).key,'dino');
@@ -141,6 +157,69 @@ async function touchDrag(page, selector, dx, dy) {
     await page.keyboard.press('ArrowLeft');
     assert.equal(await page.evaluate(() => gameRegistry.tetris.piece.x),x);
   });
+  await check('slide is visual only, game ticks and input continue, cancelled layers do not accumulate', async () => {
+    await page.evaluate(()=>{selectGame('danmaku',false);currentScene.startGame();});
+    const geometry = await page.locator('#game-canvas').boundingBox();
+    const before = await page.evaluate(()=>({time:currentScene.time,x:currentScene.player.x}));
+    await page.evaluate(()=>animateGameSwitch(snapshotGameSurface(),snapshotGameSurface(),1));
+    assert.equal(await page.locator('.reel-transition').count(),1);
+    assert.equal(await page.evaluate(()=>{
+      const r=canvas.getBoundingClientRect();
+      return document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)===canvas;
+    }),true);
+    await assertOneLoop(page);
+    await page.keyboard.down('ArrowLeft');
+    await sleep(80);
+    await page.keyboard.up('ArrowLeft');
+    const after=await page.evaluate(()=>({time:currentScene.time,x:currentScene.player.x}));
+    assert.ok(after.time>before.time);
+    assert.ok(after.x<before.x);
+    assert.deepEqual(await page.locator('#game-canvas').boundingBox(),geometry);
+    await page.waitForFunction(()=>!reelTransition);
+    await page.evaluate(()=>{
+      currentScene.togglePause();
+      window.visualState=JSON.stringify({score:currentScene.score,time:currentScene.time,lives:currentScene.lives,bombs:currentScene.bombs,player:currentScene.player,enemy:currentScene.enemy,bullets:currentScene.bullets,shots:currentScene.shots,keys:[...currentScene.keys]});
+      animateGameSwitch(snapshotGameSurface(),snapshotGameSurface(),-1);
+    });
+    await page.screenshot({path:path.join(output,'swipe-animation.png')});
+    assert.equal(await page.evaluate(()=>JSON.stringify({score:currentScene.score,time:currentScene.time,lives:currentScene.lives,bombs:currentScene.bombs,player:currentScene.player,enemy:currentScene.enemy,bullets:currentScene.bullets,shots:currentScene.shots,keys:[...currentScene.keys]})===window.visualState),true);
+    await page.evaluate(()=>cancelReelTransition());
+    assert.equal(await page.locator('.reel-transition').count(),0);
+    await page.evaluate(()=>{
+      currentScene.togglePause();
+      animateGameSwitch(snapshotGameSurface(),snapshotGameSurface(),1);
+      currentScene.togglePause();
+    });
+    assert.equal(await page.locator('.reel-transition').count(),0);
+    await assertOneLoop(page);
+    await page.getByRole('button',{name:'ショートモード',exact:true}).click();
+    for(let i=0;i<30;i++) await page.evaluate(()=>stepGame(1));
+    assert.ok(await page.locator('.reel-transition').count()<=1);
+    await assertOneLoop(page);
+    await page.getByRole('button',{name:'一覧に戻る',exact:true}).click();
+    assert.equal(await page.locator('.reel-transition').count(),0);
+    await page.emulateMedia({reducedMotion:'reduce'});
+    await page.getByRole('button',{name:'ショートモード',exact:true}).click();
+    await page.evaluate(()=>stepGame(1));
+    assert.equal(await page.locator('.reel-transition').count(),0);
+    await page.emulateMedia({reducedMotion:'no-preference'});
+    await page.getByRole('button',{name:'一覧に戻る',exact:true}).click();
+  });
+  await check('enemy marker follows the horizontal position without changing game state', async () => {
+    const result=await page.evaluate(()=>{
+      selectGame('danmaku',false);currentScene.startGame();currentScene.togglePause();
+      const samples=[];
+      for(const x of [40,200,360]) {
+        currentScene.enemy.x=x;
+        const before=JSON.stringify({score:currentScene.score,time:currentScene.time,lives:currentScene.lives,player:currentScene.player,enemy:currentScene.enemy,bullets:currentScene.bullets});
+        currentScene.draw();
+        currentScene.drawEnemyMarker();
+        samples.push({pixel:[...ctx.getImageData(x,canvas.height-6,1,1).data],same:before===JSON.stringify({score:currentScene.score,time:currentScene.time,lives:currentScene.lives,player:currentScene.player,enemy:currentScene.enemy,bullets:currentScene.bullets})});
+      }
+      return samples;
+    });
+    for(const sample of result){assert.deepEqual(sample.pixel,[255,71,87,255]);assert.equal(sample.same,true);}
+  });
   const mobile = await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:1});
   const phone = await mobile.newPage();
   phone.on('pageerror', e => errors.push(e.message));
@@ -158,6 +237,22 @@ async function touchDrag(page, selector, dx, dy) {
     }
     await phone.setViewportSize({width:390,height:844});
     await phone.screenshot({path:path.join(output, 'mobile.png')});
+  });
+  await check('normal and reel game size match at desktop, phone, tablet and landscape sizes', async () => {
+    for(const size of [{width:320,height:568},{width:390,height:844},{width:768,height:1024},{width:1365,height:900},{width:844,height:390}]) {
+      await phone.setViewportSize(size);
+      for(const key of ['dino','tetris','danmaku']) {
+        await phone.evaluate(key=>{setReelMode(false);selectGame(key,false);currentScene.startGame();},key);
+        const normal=await phone.locator('#game-canvas').boundingBox();
+        await phone.evaluate(()=>setReelMode(true));
+        const reel=await phone.locator('#game-canvas').boundingBox();
+        for(const property of ['x','y','width','height']) assert.ok(Math.abs(normal[property]-reel[property])<=1,JSON.stringify({size,key,normal,reel}));
+        const nav=await phone.locator('#reel-nav').boundingBox();
+        assert.ok(nav.x>=0 && nav.x+nav.width<=size.width && nav.y>=0 && nav.y+nav.height<=size.height);
+      }
+    }
+    await phone.evaluate(()=>setReelMode(false));
+    await phone.setViewportSize({width:390,height:844});
   });
   await check('real mobile reel swipe and Tetris gestures stay separate', async () => {
     await phone.locator('[data-game=dino]').click();
@@ -186,6 +281,7 @@ async function touchDrag(page, selector, dx, dy) {
     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
     await cdp.detach();
     assert.equal(await phone.evaluate(()=>currentScene.keys.size),0);
+    await phone.waitForFunction(()=>!reelTransition);
     await phone.screenshot({path:path.join(output, 'danmaku-mobile.png')});
     await phone.getByRole('button',{name:'一時停止',exact:true}).click();
     const frozen=await phone.evaluate(()=>currentScene.time);

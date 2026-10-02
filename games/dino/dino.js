@@ -26,8 +26,9 @@ class DinoGameScene extends GameScene {
   showTitle() {
     this.showUI(`
       <h2>${this.name}</h2>
-      <h3>操作方法</h3>
+      <details class="game-help"><summary>操作方法</summary>
       <p>Space：ジャンプ<br>スマホ：ジャンプボタン<br>P / Esc：一時停止</p>
+      </details>
       <div class="btn-group">
         <button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button>
       </div>

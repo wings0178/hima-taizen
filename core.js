@@ -30,6 +30,7 @@ class GameScene {
     document.getElementById('bomb-game').hidden = this.name !== '弾幕シューティング';
   }
   showUI(html) {
+    if (typeof cancelReelTransition === 'function') cancelReelTransition();
     this.cleanup();
     canvas.style.display = 'none';
     uiPanel.style.display = 'block';
@@ -78,6 +79,7 @@ class GameScene {
   removeListeners() {}
 }
 function syncPauseButton() {
+  if (typeof cancelReelTransition === 'function') cancelReelTransition();
   document.getElementById('pause-game').textContent = currentScene && currentScene.isPaused ? '再開' : '一時停止';
 }
 function varColor(name) {

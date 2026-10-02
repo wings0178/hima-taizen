@@ -12,7 +12,17 @@
 <div id="sidebar">
   <h1>暇つぶし大全</h1>
   <ul class="game-list" id="game-list"></ul>
-  <button id="reel-toggle" class="ui-btn btn-secondary" aria-pressed="false">ショートモード</button>
+  <div id="browse-controls">
+    <button id="reel-toggle" class="ui-btn btn-secondary" aria-pressed="false">ショートモード</button>
+    <div id="reel-nav" hidden aria-label="ゲーム切り替え">
+      <button id="reel-prev" class="ui-btn btn-secondary" aria-label="前のゲーム">↑</button>
+      <div id="reel-swipe" tabindex="0" role="group" aria-label="上下にスワイプでゲーム切り替え。PageUpで前、PageDownで次">
+        <span id="reel-position" aria-live="polite"></span>
+        <small>上下スワイプ</small>
+      </div>
+      <button id="reel-next" class="ui-btn btn-secondary" aria-label="次のゲーム">↓</button>
+    </div>
+  </div>
 </div>
 
 <div id="main-content">
@@ -41,14 +51,6 @@
     <div id="v-action" class="v-section">
       <button class="v-btn round" data-key=" " data-code="Space">ジャンプ</button>
     </div>
-  </div>
-  <div id="reel-nav" hidden aria-label="ゲーム切り替え">
-    <button id="reel-prev" class="ui-btn btn-secondary" aria-label="前のゲーム">↑</button>
-    <div id="reel-swipe" tabindex="0" role="group" aria-label="上下にスワイプでゲーム切り替え。PageUpで前、PageDownで次">
-      <span id="reel-position" aria-live="polite"></span>
-      <small>上下スワイプで切り替え</small>
-    </div>
-    <button id="reel-next" class="ui-btn btn-secondary" aria-label="次のゲーム">↓</button>
   </div>
 </div>
 
