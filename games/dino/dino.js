@@ -27,7 +27,7 @@ class DinoGameScene extends GameScene {
     this.showUI(`
       <h2>${this.name}</h2>
       <h3>操作方法</h3>
-      <p>【SPACE】キー：ジャンプ<br>メンテ中</p>
+      <p>Space：ジャンプ<br>スマホ：ジャンプボタン<br>P / Esc：一時停止</p>
       <div class="btn-group">
         <button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button>
       </div>
@@ -40,9 +40,10 @@ class DinoGameScene extends GameScene {
     canvas.width = 640; canvas.height = 320;
     this.dino.y = this.dino.groundY; this.dino.vy = 0;
     this.obstacles = []; this.frame = 0; this.score = 0;
+    this.accumulator = 0; this.lastTime = performance.now();
     this.isActive = true;
     window.addEventListener('keydown', this.keydownHandler);
-    this.loop();
+    this.reqId = requestAnimationFrame(t => this.loop(t));
   }
 
   showResult() {
@@ -58,18 +59,28 @@ class DinoGameScene extends GameScene {
   }
 
   handleInput(e) {
-    if (e.code === 'Space' && this.dino.y === this.dino.groundY) {
+    if (!this.isActive) return;
+    if (['Space', 'KeyP', 'Escape'].includes(e.code)) e.preventDefault();
+    if (e.code === 'KeyP' || e.code === 'Escape') { if (!e.repeat) this.togglePause(); return; }
+    if (!this.isPaused && e.code === 'Space' && !e.repeat && this.dino.y === this.dino.groundY) {
       this.dino.vy = this.dino.jumpPower;
     }
   }
 
-  stopGameLoop() { this.isActive = false; cancelAnimationFrame(this.reqId); }
+  stopGameLoop() { super.stopGameLoop(); }
   removeListeners() { window.removeEventListener('keydown', this.keydownHandler); }
 
-  loop() {
+  loop(time) {
+    if (!this.isActive || this.isPaused) return;
+    this.accumulator += Math.min(time - this.lastTime, 100);
+    this.lastTime = time;
+    while (this.accumulator >= 1000 / 60 && this.isActive) {
+      this.update();
+      this.accumulator -= 1000 / 60;
+    }
     if (!this.isActive) return;
-    this.update(); this.draw();
-    this.reqId = requestAnimationFrame(() => this.loop());
+    this.draw();
+    this.reqId = requestAnimationFrame(t => this.loop(t));
   }
 
   update() {
@@ -94,6 +105,7 @@ class DinoGameScene extends GameScene {
       if (this.dino.x + margin < obs.x + obs.w && this.dino.x + this.dino.w - margin > obs.x &&
           this.dino.y + margin < obs.y + obs.h && this.dino.y + this.dino.h - margin > obs.y) {
         this.stopGameLoop(); this.showResult();
+        return;
       }
     }
   }
@@ -129,6 +141,11 @@ class DinoGameScene extends GameScene {
     });
 
     ctx.fillStyle = '#fff'; ctx.font = '20px Monospace'; ctx.textAlign='left'; ctx.fillText(`SCORE: ${this.score}`, 20, 30);
+    if (this.isPaused) {
+      ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 28px Arial'; ctx.textAlign = 'center';
+      ctx.fillText('一時停止', canvas.width / 2, canvas.height / 2);
+    }
   }
 }
 

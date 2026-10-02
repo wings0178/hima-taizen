@@ -6,13 +6,15 @@
   --success-color: #2ed573;
   --ui-panel-bg: rgba(255, 255, 255, 0.05);
 }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   margin: 0; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--bg-color); color: var(--text-color);
-  display: flex; height: 100vh; overflow: hidden;
+  display: flex; height: 100vh; height: 100dvh; overflow: hidden;
 }
 #sidebar {
-  width: 260px; background-color: var(--sidebar-bg); padding: 30px 20px;
+  width: 300px; flex-shrink: 0; background-color: var(--sidebar-bg); padding: 30px 20px;
   box-shadow: 4px 0 15px rgba(0,0,0,0.4); display: flex; flex-direction: column; z-index: 10;
 }
 h1 {
@@ -25,11 +27,18 @@ h1 {
   border-radius: 10px; cursor: pointer; transition: background 0.2s; font-weight: 600; text-align: left;
 }
 .game-item:hover, .game-item.active { background-color: var(--accent-color); color: white; }
+.game-item { padding: 0; }
+.game-item button { width: 100%; padding: 15px 20px; color: inherit; background: none; border: 0; font: inherit; text-align: left; cursor: pointer; border-radius: inherit; }
+button:focus-visible, #reel-swipe:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+#reel-toggle { padding: 12px 10px; flex-shrink: 0; }
 
 #main-content {
   flex-grow: 1; display: flex; justify-content: center; align-items: center;
-  position: relative; padding: 20px; flex-direction: column; overflow: hidden;
+  position: relative; padding: 20px; flex-direction: column; overflow: hidden; min-width: 0; min-height: 0;
 }
+#game-stage { width: 100%; flex: 1; min-height: 0; position: relative; display: flex; align-items: center; justify-content: center; }
+#play-controls { width: 100%; display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 10px; flex-shrink: 0; }
+#play-controls .ui-btn { padding: 8px 16px; }
 canvas {
   background-color: #000;
   border-radius: 12px;
@@ -37,7 +46,7 @@ canvas {
   display: none;
   width: 100%;
   height: 100%;
-  max-height: 85vh; 
+  max-height: 100%;
   object-fit: contain;
   touch-action: none;
 }
@@ -45,13 +54,13 @@ canvas {
   position: absolute; background-color: rgba(10, 10, 20, 0.95);
   padding: 40px; border-radius: 16px; text-align: center;
   box-shadow: 0 15px 50px rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-  border: 1px solid rgba(255,255,255,0.1); max-width: 80%; display: none; z-index: 20;
+  border: 1px solid rgba(255,255,255,0.1); max-width: 90%; max-height: 100%; overflow-y: auto; display: none; z-index: 20;
 }
 .ui-panel h2 { font-size: 2.5rem; margin-top: 0; color: #fff; }
 .ui-panel h3 { font-size: 1.2rem; color: var(--accent-color); margin-bottom: 5px; }
 .ui-panel p { margin: 10px 0 25px 0; line-height: 1.6; color: #ccc; }
 .score-display { font-size: 3rem; font-weight: bold; color: var(--success-color); margin: 20px 0; }
-.btn-group { display: flex; gap: 15px; justify-content: center; }
+.btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 .ui-btn {
   padding: 12px 30px; font-size: 1rem; font-weight: bold;
   border: none; border-radius: 8px; cursor: pointer; transition: transform 0.1s;
@@ -60,13 +69,13 @@ canvas {
 .btn-primary { background-color: var(--accent-color); color: white; }
 .btn-secondary { background-color: #555; color: white; }
 
-#virtual-controls { display: none; width: 100%; margin-top: 15px; justify-content: center; gap: 20px; user-select: none; }
+#virtual-controls { display: none; width: 100%; margin-top: 15px; justify-content: center; gap: 20px; user-select: none; flex-shrink: 0; }
 .v-section { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 .h-row { display: flex; gap: 5px; }
 .v-btn {
   background: var(--sidebar-bg); color: var(--text-color); border: 2px solid #444;
   border-radius: 8px; width: 50px; height: 50px; font-size: 1.2rem; font-weight: bold;
-  display: flex; justify-content: center; align-items: center; touch-action: manipulation;
+  display: flex; justify-content: center; align-items: center; touch-action: none;
 }
 .v-btn:active { background: #555; transform: scale(0.9); }
 .v-btn.round { width: 70px; height: 70px; border-radius: 50%; border-color: var(--accent-color); }
@@ -75,14 +84,41 @@ canvas {
 .ranking h4 { margin: 0 0 10px 0; color: var(--accent-color); font-size: 1.1rem; text-align: center; }
 .ranking ol { margin: 0; padding-left: 20px; color: #fff; font-weight: bold; }
 .ranking li { margin-bottom: 5px; letter-spacing: 1px; }
+#reel-nav { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 12px; flex-shrink: 0; touch-action: none; user-select: none; }
+#reel-nav .ui-btn { padding: 12px 18px; }
+#reel-swipe { flex: 1; text-align: center; padding: 8px 0; cursor: ns-resize; }
+#reel-swipe span, #reel-swipe small { display: block; }
+#reel-swipe small { color: #bbb; margin-top: 4px; font-size: 12px; }
+.ui-panel { overscroll-behavior: contain; }
 
 @media (max-width: 768px) {
   body { flex-direction: column; }
   #sidebar { width: 100%; padding: 10px; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
   h1 { display: none; } 
-  .game-list { display: flex; gap: 10px; flex-wrap: nowrap; padding-bottom: 5px; }
-  .game-item { margin: 0; white-space: nowrap; padding: 10px 15px; }
-  #main-content { padding: 10px; justify-content: flex-start; }
+  .game-list { display: flex; gap: 10px; flex-wrap: nowrap; padding-bottom: 5px; overflow-x: auto; }
+  .game-item { margin: 0; white-space: nowrap; padding: 0; flex-shrink: 0; }
+  .game-item button { padding: 10px 15px; }
+  #reel-toggle { margin-top: 5px; align-self: flex-start; font-size: 0.85rem; padding: 8px 12px; }
+  #main-content { padding: 10px; padding-bottom: max(10px, env(safe-area-inset-bottom)); justify-content: flex-start; }
+  #game-stage .ui-panel { top: 0; }
+  .ui-panel { padding: 24px 20px; max-width: 100%; }
+  .ui-panel h2 { font-size: clamp(1.6rem, 7vw, 2.5rem); }
+  .ui-panel p { font-size: 0.9rem; }
+  .ui-btn { padding: 10px 18px; }
   #virtual-controls.playing { display: flex; flex-wrap: wrap; }
   .v-btn { width: 45px; height: 45px; font-size: 1rem; }
+}
+@media (pointer: coarse) { #virtual-controls.playing { display: flex; } }
+@media (max-height: 500px) and (orientation: landscape) {
+  #sidebar { width: 190px; padding: 10px; }
+  body { flex-direction: row; }
+  .game-list { display: block; }
+  .game-item { margin-bottom: 6px; }
+  .game-item button { padding: 8px 12px; }
+  #virtual-controls { position: absolute; bottom: 10px; right: 10px; width: auto; z-index: 5; }
+  .reel-mode #virtual-controls { bottom: 82px; }
+  #reel-nav { margin-top: 5px; }
+  .ui-panel { padding: 12px 20px; }
+  .ui-panel h2 { font-size: 1.5rem; margin-bottom: 8px; }
+  .ui-panel p { margin-bottom: 10px; }
 }

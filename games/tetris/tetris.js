@@ -23,6 +23,8 @@ class TetrisGameScene extends GameScene {
     this.touchStartHandler = (e) => this.handleTouchStart(e);
     this.touchMoveHandler = (e) => this.handleTouchMove(e);
     this.touchEndHandler = (e) => this.handleTouchEnd(e);
+    this.touchCancelHandler = () => { this.gestureActive = false; };
+    this.gestureActive = false;
 
     this.touchStartX = 0;
     this.touchStartY = 0;
@@ -55,7 +57,7 @@ class TetrisGameScene extends GameScene {
       【Space】ハードドロップ 【Shift / C】ホールド<br>
       【P / Esc】ポーズ<br>
       <span style="color:var(--accent-color);font-size:0.9rem;">
-      ※スマホ操作（画面下の空きスペースでも操作可能）<br>
+      スマホ：ゲーム画面で操作<br>
       タップ：回転<br>
       左右にドラッグ：移動<br>
       下フリック：一気に落下<br>
@@ -74,7 +76,8 @@ class TetrisGameScene extends GameScene {
     canvas.width = (this.cols + 8) * this.blockSize; 
     canvas.height = this.rows * this.blockSize;
     this.board = Array.from({length: this.rows}, () => Array(this.cols).fill(0));
-    this.score = 0; 
+    this.score = 0;
+    this.dropCounter = 0; this.gestureActive = false;
     this.dropInterval = 1000; // 常に1秒間隔で落下
     this.bag = [];
     this.holdPieceIndex = null;
@@ -88,6 +91,7 @@ class TetrisGameScene extends GameScene {
     this.touchTarget.addEventListener('touchstart', this.touchStartHandler, {passive: false});
     this.touchTarget.addEventListener('touchmove', this.touchMoveHandler, {passive: false});
     this.touchTarget.addEventListener('touchend', this.touchEndHandler, {passive: false});
+    this.touchTarget.addEventListener('touchcancel', this.touchCancelHandler);
 
     this.spawnPiece();
     this.lastTime = performance.now();
@@ -112,9 +116,8 @@ class TetrisGameScene extends GameScene {
     this.showTitle();
   }
 
-  stopGameLoop() { 
-    this.isActive = false; 
-    cancelAnimationFrame(this.reqId); 
+  stopGameLoop() {
+    super.stopGameLoop();
   }
 
   removeListeners() { 
@@ -122,6 +125,8 @@ class TetrisGameScene extends GameScene {
     this.touchTarget.removeEventListener('touchstart', this.touchStartHandler);
     this.touchTarget.removeEventListener('touchmove', this.touchMoveHandler);
     this.touchTarget.removeEventListener('touchend', this.touchEndHandler);
+    this.touchTarget.removeEventListener('touchcancel', this.touchCancelHandler);
+    this.gestureActive = false;
   }
 
   drawFromBag() {
@@ -245,21 +250,26 @@ class TetrisGameScene extends GameScene {
   }
 
   togglePause() {
-    if (this.isGameOver) return;
+    if (!this.isActive || this.isGameOver) return;
     this.isPaused = !this.isPaused;
+    this.gestureActive = false;
+    cancelAnimationFrame(this.reqId);
+    this.reqId = null;
     if (!this.isPaused) {
       this.lastTime = performance.now();
       this.reqId = requestAnimationFrame((t) => this.loop(t));
     } else {
-      this.draw(); 
+      this.draw();
     }
+    syncPauseButton();
   }
 
   handleInput(e) {
     if (!this.isActive || this.isGameOver) return;
+    if (['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', 'Space', 'KeyP', 'Escape', 'KeyC', 'ShiftLeft', 'ShiftRight'].includes(e.code)) e.preventDefault();
     
     if (e.code === 'KeyP' || e.code === 'Escape') {
-      this.togglePause();
+      if (!e.repeat) this.togglePause();
       return;
     }
     
@@ -274,15 +284,17 @@ class TetrisGameScene extends GameScene {
   }
 
   handleTouchStart(e) {
+    this.gestureActive = false;
     if (!this.isActive || this.isGameOver) return;
+    if (e.touches.length !== 1 || e.target.closest('button, #reel-nav, #virtual-controls, #ui-panel')) return;
     
     const clientX = e.touches[0].clientX;
     const clientY = e.touches[0].clientY;
-    const rect = canvas.getBoundingClientRect();
+    const point = canvasPoint(clientX, clientY);
 
-    if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
-      const touchX = (clientX - rect.left) * (canvas.width / rect.width);
-      const touchY = (clientY - rect.top) * (canvas.height / rect.height);
+    if (point && point.inside) {
+      const touchX = point.x;
+      const touchY = point.y;
       
       if (touchX > canvas.width - 50 && touchY < 50) {
         this.togglePause();
@@ -308,6 +320,10 @@ class TetrisGameScene extends GameScene {
     }
 
     if (this.isPaused) return;
+    if (reelMode && !point?.inside) return;
+    e.preventDefault();
+    this.gestureActive = true;
+    this.touchId = e.touches[0].identifier;
 
     this.touchStartX = clientX;
     this.touchStartY = clientY;
@@ -319,7 +335,8 @@ class TetrisGameScene extends GameScene {
   }
 
   handleTouchMove(e) {
-    if (!this.isActive || this.isPaused || this.isGameOver) return;
+    if (!this.gestureActive || !this.isActive || this.isPaused || this.isGameOver) return;
+    if (e.touches.length !== 1) { this.gestureActive = false; return; }
     e.preventDefault(); 
 
     const currentX = e.touches[0].clientX;
@@ -360,10 +377,14 @@ class TetrisGameScene extends GameScene {
   }
 
   handleTouchEnd(e) {
-    if (!this.isActive || this.isPaused || this.isGameOver) return;
+    if (!this.gestureActive || !this.isActive || this.isPaused || this.isGameOver) return;
+    const touch = Array.from(e.changedTouches).find(t => t.identifier === this.touchId);
+    if (!touch) return;
+    this.gestureActive = false;
+    e.preventDefault();
     
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
+    const touchEndX = touch.clientX;
+    const touchEndY = touch.clientY;
     const duration = Date.now() - this.touchStartTime;
 
     const totalDx = touchEndX - this.touchStartX;
@@ -390,9 +411,10 @@ class TetrisGameScene extends GameScene {
 
   loop(time = 0) {
     if (!this.isActive || this.isPaused || this.isGameOver) return;
-    const deltaTime = time - this.lastTime; this.lastTime = time;
+    const deltaTime = Math.min(time - this.lastTime, 100); this.lastTime = time;
     this.dropCounter += deltaTime;
     if (this.dropCounter > this.dropInterval) this.drop();
+    if (!this.isActive || this.isGameOver) return;
     this.draw();
     this.reqId = requestAnimationFrame((t) => this.loop(t));
   }

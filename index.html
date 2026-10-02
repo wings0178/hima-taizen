@@ -2,8 +2,9 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>暇つぶしゲーム大全</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,33 +12,50 @@
 <div id="sidebar">
   <h1>暇つぶし大全</h1>
   <ul class="game-list" id="game-list"></ul>
+  <button id="reel-toggle" class="ui-btn btn-secondary" aria-pressed="false">ショートモード</button>
 </div>
 
 <div id="main-content">
-  <canvas id="game-canvas"></canvas>
+  <div id="play-controls" hidden>
+    <button id="bomb-game" class="ui-btn btn-secondary" hidden>ボム（3）</button>
+    <button id="pause-game" class="ui-btn btn-secondary">一時停止</button>
+    <button id="quit-game" class="ui-btn btn-secondary">タイトルへ</button>
+  </div>
+  <div id="game-stage">
+  <canvas id="game-canvas" aria-label="ゲーム画面"></canvas>
   <div id="ui-panel" class="ui-panel">
     <div id="ui-content"></div>
+  </div>
   </div>
   
   <div id="virtual-controls">
     <div id="v-dpad" class="v-section">
-      <button class="v-btn" data-key="ArrowUp" data-code="ArrowUp">↑</button>
+      <button class="v-btn" data-key="ArrowUp" data-code="ArrowUp" aria-label="上へ移動">↑</button>
       <div class="h-row">
-        <button class="v-btn" data-key="ArrowLeft" data-code="ArrowLeft">←</button>
-        <button class="v-btn" data-key="ArrowDown" data-code="ArrowDown">↓</button>
-        <button class="v-btn" data-key="ArrowRight" data-code="ArrowRight">→</button>
+        <button class="v-btn" data-key="ArrowLeft" data-code="ArrowLeft" aria-label="左へ移動">←</button>
+        <button class="v-btn" data-key="ArrowDown" data-code="ArrowDown" aria-label="下へ移動">↓</button>
+        <button class="v-btn" data-key="ArrowRight" data-code="ArrowRight" aria-label="右へ移動">→</button>
       </div>
     </div>
     
     <div id="v-action" class="v-section">
-      <button class="v-btn round" data-key=" " data-code="Space">JUMP</button>
+      <button class="v-btn round" data-key=" " data-code="Space">ジャンプ</button>
     </div>
+  </div>
+  <div id="reel-nav" hidden aria-label="ゲーム切り替え">
+    <button id="reel-prev" class="ui-btn btn-secondary" aria-label="前のゲーム">↑</button>
+    <div id="reel-swipe" tabindex="0" role="group" aria-label="上下にスワイプでゲーム切り替え。PageUpで前、PageDownで次">
+      <span id="reel-position" aria-live="polite"></span>
+      <small>上下スワイプで切り替え</small>
+    </div>
+    <button id="reel-next" class="ui-btn btn-secondary" aria-label="次のゲーム">↓</button>
   </div>
 </div>
 
 <script src="core.js"></script>
 <script src="games/dino/dino.js"></script>
 <script src="games/tetris/tetris.js"></script>
+<script src="games/danmaku/danmaku.js"></script>
 <script src="app.js"></script>
 
 </body>
