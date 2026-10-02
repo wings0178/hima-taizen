@@ -17,7 +17,8 @@ class DanmakuGameScene extends GameScene {
       <p>方向キー / WASD：移動　Shift：低速<br>
       スマホ：ドラッグで移動　射撃は自動<br>
       X / ボムボタン：弾を消去<br>P / Esc：一時停止<br>
-      残機3・ボム3。3つの弾幕を突破するとクリア。</p>
+      残機3・ボム3。3つの弾幕を突破するとクリア。
+      <span class="reel-input-help">ショートモードの上下移動：ゆっくりドラッグ／十字キー<br>大きな上下スワイプでゲーム切り替え</span></p>
       </details>
       <div class="btn-group"><button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button></div>
     `);

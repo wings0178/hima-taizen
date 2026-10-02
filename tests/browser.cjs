@@ -31,12 +31,15 @@ async function assertOneLoop(page) {
   const s = await scene(page);
   assert.equal(s.raf, s.active && !s.paused ? 1 : 0, JSON.stringify(s));
 }
-async function touchDrag(page, selector, dx, dy) {
+async function touchDrag(page, selector, dx, dy, delay = 0) {
   const box = await page.locator(selector).boundingBox();
   const x = box.x + box.width / 2, y = box.y + box.height / 2;
   const cdp = await page.context().newCDPSession(page);
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
-  for (let i = 1; i <= 5; i++) await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+dx*i/5,y:y+dy*i/5}]});
+  for (let i = 1; i <= 5; i++) {
+    if(delay) await sleep(delay);
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+dx*i/5,y:y+dy*i/5}]});
+  }
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await cdp.detach();
 }
@@ -247,7 +250,7 @@ async function touchDrag(page, selector, dx, dy) {
         await phone.evaluate(()=>setReelMode(true));
         const reel=await phone.locator('#game-canvas').boundingBox();
         for(const property of ['x','y','width','height']) assert.ok(Math.abs(normal[property]-reel[property])<=1,JSON.stringify({size,key,normal,reel}));
-        const nav=await phone.locator('#reel-nav').boundingBox();
+        const nav=await phone.locator('#reel-hint').boundingBox();
         assert.ok(nav.x>=0 && nav.x+nav.width<=size.width && nav.y>=0 && nav.y+nav.height<=size.height);
       }
     }
@@ -257,7 +260,7 @@ async function touchDrag(page, selector, dx, dy) {
   await check('real mobile reel swipe and Tetris gestures stay separate', async () => {
     await phone.locator('[data-game=dino]').click();
     await phone.getByRole('button',{name:'ショートモード',exact:true}).click();
-    await touchDrag(phone,'#reel-swipe',0,-80);
+    await touchDrag(phone,'#game-canvas',0,-180);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
     await touchDrag(phone,'#game-canvas',0,-70);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
@@ -266,7 +269,7 @@ async function touchDrag(page, selector, dx, dy) {
     assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
     assert.ok(await phone.evaluate(()=>currentScene.board.some(row=>row.some(Boolean))));
     await phone.screenshot({path:path.join(output, 'tetris-mobile.png')});
-    await touchDrag(phone,'#reel-swipe',0,-80);
+    await touchDrag(phone,'#game-canvas',0,-180);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'danmaku');
   });
   await check('mobile danmaku drag and held pad release', async () => {
@@ -309,16 +312,72 @@ async function touchDrag(page, selector, dx, dy) {
     assert.equal(await phone.evaluate(()=>currentScene.gestureActive),false);
   });
   await check('reel swipe direction, cancelled and horizontal gestures', async () => {
-    await touchDrag(phone,'#reel-swipe',0,65);
+    await touchDrag(phone,'#game-canvas',0,180);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'dino');
-    await touchDrag(phone,'#reel-swipe',65,0);
+    await touchDrag(phone,'#game-canvas',65,0);
     assert.equal(await phone.evaluate(()=>selectedGameKey),'dino');
     const cdp=await mobile.newCDPSession(phone);
-    const b=await phone.locator('#reel-swipe').boundingBox();
+    const b=await phone.locator('#game-canvas').boundingBox();
     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:b.x+b.width/2,y:b.y+b.height/2}]});
     await cdp.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});
     await cdp.detach();
     assert.equal(await phone.evaluate(()=>selectedGameKey),'dino');
+  });
+  await check('full-screen swipe follows the finger and never applies navigation input to Tetris or the ship', async () => {
+    assert.equal(await phone.locator('#reel-next,#reel-prev,#reel-nav,#reel-swipe').count(),0);
+    await phone.evaluate(()=>{selectGame('tetris',true);currentScene.togglePause();});
+    const before = await phone.evaluate(()=>JSON.stringify({piece:currentScene.piece,board:currentScene.board,hold:currentScene.holdPieceIndex,score:currentScene.score}));
+    const box = await phone.locator('#game-canvas').boundingBox();
+    const x=box.x+box.width/2,y=box.y+box.height/2;
+    const cdp=await mobile.newCDPSession(phone);
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-70}]});
+    assert.equal(await phone.locator('.reel-drag-preview').count(),1);
+    assert.ok(await phone.evaluate(()=>reelDragLayer.children[0].style.transform.includes('-70')));
+    assert.equal(await phone.evaluate(()=>JSON.stringify({piece:currentScene.piece,board:currentScene.board,hold:currentScene.holdPieceIndex,score:currentScene.score})),before);
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-180}]});
+    await phone.screenshot({path:path.join(output,'full-screen-swipe.png')});
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    assert.equal(await phone.evaluate(()=>selectedGameKey),'danmaku');
+    assert.equal(await phone.evaluate(()=>JSON.stringify({piece:gameRegistry.tetris.piece,board:gameRegistry.tetris.board,hold:gameRegistry.tetris.holdPieceIndex,score:gameRegistry.tetris.score})),before);
+    const ship=await phone.evaluate(()=>({...currentScene.player}));
+    await touchDrag(phone,'#game-canvas',0,-180,40);
+    assert.equal(await phone.evaluate(()=>selectedGameKey),'dino');
+    assert.deepEqual(await phone.evaluate(()=>gameRegistry.danmaku.player),ship);
+    await phone.evaluate(()=>selectGame('danmaku',true));
+    const playerY=await phone.evaluate(()=>currentScene.player.y);
+    await touchDrag(phone,'#game-canvas',0,-140,80);
+    assert.equal(await phone.evaluate(()=>selectedGameKey),'danmaku');
+    assert.ok(await phone.evaluate(()=>currentScene.player.y)<playerY);
+    assert.equal(await phone.locator('.reel-drag-preview').count(),0);
+    await cdp.detach();
+  });
+  await check('mouse wheel on the canvas changes games once per burst in both directions', async () => {
+    await page.evaluate(()=>{setReelMode(true);selectGame('dino',true);});
+    const box=await page.locator('#game-canvas').boundingBox();
+    await page.mouse.move(box.x+box.width/2,box.y+box.height/2);
+    await page.mouse.wheel(0,120);
+    await page.waitForFunction(()=>selectedGameKey==='tetris');
+    for(let i=0;i<5;i++) await page.mouse.wheel(0,100);
+    assert.equal((await scene(page)).key,'tetris');
+    await assertOneLoop(page);
+    await sleep(220);
+    await page.mouse.wheel(0,-120);
+    await page.waitForFunction(()=>selectedGameKey==='dino');
+    await page.waitForFunction(()=>!reelTransition);
+    const stage=await page.locator('#game-canvas').boundingBox();
+    await page.mouse.move(stage.x+stage.width/2,stage.y+stage.height/2);
+    await page.mouse.down();
+    await page.mouse.move(stage.x+stage.width/2,stage.y+stage.height/2-180,{steps:5});
+    await page.mouse.up();
+    assert.equal((await scene(page)).key,'tetris');
+    await assertOneLoop(page);
+  });
+  await check('reel swipes also work from result screens', async () => {
+    await phone.evaluate(()=>{selectGame('dino',true);currentScene.showResult();});
+    await touchDrag(phone,'#game-stage',0,-180);
+    assert.equal(await phone.evaluate(()=>selectedGameKey),'tetris');
+    await phone.waitForFunction(()=>!reelTransition);
   });
   await check('landscape canvas and navigation remain visible', async () => {
     await phone.setViewportSize({width:844,height:390});
@@ -326,7 +385,7 @@ async function touchDrag(page, selector, dx, dy) {
       await phone.locator(`[data-game=${key}]`).click();
       const rect=await phone.locator('#game-canvas').boundingBox();
       assert.ok(rect.width>100 && rect.height>100,JSON.stringify(rect));
-      const nav=await phone.locator('#reel-nav').boundingBox();
+      const nav=await phone.locator('#reel-hint').boundingBox();
       assert.ok(nav.y+nav.height<=390);
     }
     await phone.screenshot({path:path.join(output, 'landscape.png')});

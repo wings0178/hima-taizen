@@ -14,14 +14,8 @@
   <ul class="game-list" id="game-list"></ul>
   <div id="browse-controls">
     <button id="reel-toggle" class="ui-btn btn-secondary" aria-pressed="false">ショートモード</button>
-    <div id="reel-nav" hidden aria-label="ゲーム切り替え">
-      <button id="reel-prev" class="ui-btn btn-secondary" aria-label="前のゲーム">↑</button>
-      <div id="reel-swipe" tabindex="0" role="group" aria-label="上下にスワイプでゲーム切り替え。PageUpで前、PageDownで次">
-        <span id="reel-position" aria-live="polite"></span>
-        <small>上下スワイプ</small>
-      </div>
-      <button id="reel-next" class="ui-btn btn-secondary" aria-label="次のゲーム">↓</button>
-    </div>
+    <small id="reel-hint" hidden>画面を上下スワイプ</small>
+    <span id="reel-position" class="sr-only" aria-live="polite"></span>
   </div>
 </div>
 

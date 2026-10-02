@@ -29,13 +29,19 @@ h1 {
 .game-item:hover, .game-item.active { background-color: var(--accent-color); color: white; }
 .game-item { padding: 0; }
 .game-item button { width: 100%; padding: 15px 20px; color: inherit; background: none; border: 0; font: inherit; text-align: left; cursor: pointer; border-radius: inherit; }
-button:focus-visible, #reel-swipe:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 #reel-toggle { padding: 12px 10px; flex-shrink: 0; }
 #browse-controls { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+#reel-hint { color: #bbb; font-size: 11px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.reel-mode #game-stage { touch-action: none; user-select: none; }
+.reel-mode .game-help[open] { touch-action: pan-y; }
 .game-help { margin: 16px 0 24px; }
 .game-help summary { color: var(--accent-color); font-size: 1.2rem; font-weight: bold; cursor: pointer; list-style-position: inside; }
 .game-help summary:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 .game-help p { margin-bottom: 0; }
+.reel-input-help { display: none; }
+.reel-mode .reel-input-help { display: block; margin-top: 8px; font-size: 0.85rem; }
 .reel-transition { position: absolute; inset: 0; overflow: hidden; border-radius: 12px; pointer-events: none; z-index: 30; }
 .reel-preview { position: absolute; inset: 0; background: var(--bg-color); display: flex; align-items: center; justify-content: center; }
 .reel-preview canvas { display: block; box-shadow: none; }
@@ -93,11 +99,6 @@ canvas {
 .ranking h4 { margin: 0 0 10px 0; color: var(--accent-color); font-size: 1.1rem; text-align: center; }
 .ranking ol { margin: 0; padding-left: 20px; color: #fff; font-weight: bold; }
 .ranking li { margin-bottom: 5px; letter-spacing: 1px; }
-#reel-nav { display: flex; align-items: center; gap: 8px; width: 100%; min-width: 0; flex-shrink: 0; touch-action: none; user-select: none; }
-#reel-nav .ui-btn { padding: 12px 18px; }
-#reel-swipe { flex: 1; min-width: 0; text-align: center; padding: 8px 0; cursor: ns-resize; }
-#reel-swipe span, #reel-swipe small { display: block; }
-#reel-swipe small { color: #bbb; margin-top: 4px; font-size: 12px; }
 .ui-panel { overscroll-behavior: contain; }
 
 @media (max-width: 768px) {
@@ -109,11 +110,6 @@ canvas {
   .game-item button { padding: 10px 15px; }
   #browse-controls { flex-direction: row; align-items: center; gap: 8px; height: 36px; margin-top: 5px; }
   #reel-toggle { font-size: 0.85rem; padding: 8px 12px; height: 36px; }
-  #reel-nav { width: auto; flex: 1; height: 36px; gap: 6px; }
-  #reel-nav .ui-btn { padding: 0; width: 32px; height: 36px; flex-shrink: 0; }
-  #reel-swipe { padding: 0; display: flex; align-items: center; justify-content: center; height: 36px; }
-  #reel-position { display: none !important; }
-  #reel-swipe small { margin: 0; white-space: nowrap; }
   #main-content { padding: 10px; padding-bottom: max(10px, env(safe-area-inset-bottom)); justify-content: flex-start; }
   #game-stage .ui-panel { top: 0; }
   .ui-panel { padding: 24px 20px; max-width: 100%; }
@@ -132,11 +128,6 @@ canvas {
   .game-item button { padding: 8px 12px; }
   #virtual-controls { position: absolute; bottom: 10px; right: 10px; width: auto; z-index: 5; }
   #browse-controls { flex-direction: column; height: auto; align-items: stretch; }
-  #reel-nav { width: 100%; flex: none; }
-  #reel-nav .ui-btn { padding: 0; width: 32px; height: 36px; flex-shrink: 0; }
-  #reel-swipe { padding: 0; display: flex; align-items: center; justify-content: center; height: 36px; }
-  #reel-position { display: none !important; }
-  #reel-swipe small { margin: 0; font-size: 11px; white-space: nowrap; }
   #reel-toggle { align-self: stretch; }
   .ui-panel { padding: 12px 20px; }
   .ui-panel h2 { font-size: 1.5rem; margin-bottom: 8px; }
