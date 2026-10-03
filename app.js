@@ -2,6 +2,7 @@ const gameRegistry = {};
 try { if (typeof DinoGameScene !== 'undefined') gameRegistry.dino = new DinoGameScene(); } catch (e) { console.warn(e); }
 try { if (typeof TetrisGameScene !== 'undefined') gameRegistry.tetris = new TetrisGameScene(); } catch (e) { console.warn(e); }
 try { if (typeof DanmakuGameScene !== 'undefined') gameRegistry.danmaku = new DanmakuGameScene(); } catch (e) { console.warn(e); }
+try { if (typeof BallLaunchGameScene !== 'undefined') gameRegistry.ball = new BallLaunchGameScene(); } catch (e) { console.warn(e); }
 const listEl = document.getElementById('game-list');
 const reelToggle = document.getElementById('reel-toggle');
 const gameStage = document.getElementById('game-stage');

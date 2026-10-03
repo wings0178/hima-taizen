@@ -38,6 +38,10 @@ button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .game-help summary { color: var(--accent-color); font-size: 1.2rem; font-weight: bold; cursor: pointer; list-style-position: inside; }
 .game-help summary:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 .game-help p { margin-bottom: 0; }
+.ball-credits { font-size: .875rem; }
+.ball-credits summary { font-size: 1rem; }
+.ball-credits a { color: #ffc1c8; }
+.ball-result { font-size: 2rem !important; }
 .reel-input-help { display: none; }
 .reel-mode .reel-input-help { display: block; margin-top: 8px; font-size: 0.85rem; }
 .reel-transition { position: absolute; inset: 0; overflow: hidden; border-radius: 12px; pointer-events: none; z-index: 30; }

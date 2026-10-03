@@ -30,6 +30,7 @@ class GameScene {
     document.getElementById('v-dpad').style.display = this.controls.includes('dpad') ? 'flex' : 'none';
     document.getElementById('v-action').style.display = this.controls.includes('jump') ? 'flex' : 'none';
     document.getElementById('bomb-game').hidden = !this.controls.includes('bomb');
+    document.getElementById('sound-game').hidden = !this.controls.includes('sound');
     document.getElementById('virtual-controls').classList.toggle('playing', this.controls.some(control => ['dpad', 'jump'].includes(control)));
   }
   showUI(html) {
@@ -165,6 +166,7 @@ document.querySelectorAll('.v-btn').forEach(btn => {
 document.getElementById('pause-game').addEventListener('click', () => currentScene && currentScene.togglePause());
 document.getElementById('quit-game').addEventListener('click', () => currentScene && currentScene.showTitle());
 document.getElementById('bomb-game').addEventListener('click', () => currentScene && currentScene.useBomb && currentScene.useBomb());
+document.getElementById('sound-game').addEventListener('click', () => currentScene?.toggleSound?.());
 function pauseHiddenGame() {
   releaseVirtualKeys();
   if (currentScene) currentScene.pauseGame();

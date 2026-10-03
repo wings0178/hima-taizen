@@ -1,6 +1,6 @@
 {
   "name": "hima-taizen",
   "private": true,
-  "scripts": {"test": "node tests/browser.cjs"},
+  "scripts": {"test": "node tests/browser.cjs && node tests/ball-launch.cjs"},
   "devDependencies": {"playwright": "1.62.1"}
 }

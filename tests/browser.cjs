@@ -59,10 +59,12 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
   });
   page.on('pageerror', e => errors.push(e.message));
   page.on('console', msg => {if(msg.type()==='error') errors.push(msg.text());});
-  await page.addInitScript(() => !localStorage.getItem('hima-taizen-settings-v1') && localStorage.setItem('hima-taizen-settings-v1', JSON.stringify({slimeSide:'left',keepProgress:false})));
+  // Original-game cycling regressions use their original three slots.
+  // The ball game and the four-game cycle are covered in ball-launch.cjs.
+  await page.addInitScript(() => !localStorage.getItem('hima-taizen-settings-v1') && localStorage.setItem('hima-taizen-settings-v1', JSON.stringify({slimeSide:'left',games:['dino','tetris','danmaku'],keepProgress:false})));
   await page.goto(base);
-  await check('3 games and original title', async () => {
-    assert.equal(await page.locator('.game-item button').count(),3);
+  await check('4 games and original title', async () => {
+    assert.equal(await page.locator('.game-item button').count(),4);
     assert.equal(await page.locator('#ui-content h2').textContent(),'恐竜ランナー');
     await assertOneLoop(page);
     await page.screenshot({path:path.join(output, 'desktop.png')});
@@ -227,7 +229,7 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
   const mobile = await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:1});
   const phone = await mobile.newPage();
   phone.on('pageerror', e => errors.push(e.message));
-  await phone.addInitScript(() => !localStorage.getItem('hima-taizen-settings-v1') && localStorage.setItem('hima-taizen-settings-v1',JSON.stringify({slimeSide:'left',keepProgress:false})));
+  await phone.addInitScript(() => !localStorage.getItem('hima-taizen-settings-v1') && localStorage.setItem('hima-taizen-settings-v1',JSON.stringify({slimeSide:'left',games:['dino','tetris','danmaku'],keepProgress:false})));
   await phone.goto(base);
   await check('mobile title, start buttons and no overflow at 320/390/768', async () => {
     for(const size of [{width:320,height:568},{width:390,height:844},{width:768,height:1024}]) {
@@ -595,6 +597,7 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
 
   const progressContext=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
   const progress=await progressContext.newPage();
+  await progress.addInitScript(()=>!localStorage.getItem('hima-taizen-settings-v1') && localStorage.setItem('hima-taizen-settings-v1',JSON.stringify({games:['dino','tetris','danmaku'],keepProgress:true})));
   progress.on('pageerror',e=>errors.push(e.message));
   await progress.addInitScript(()=>{
     const request=window.requestAnimationFrame.bind(window),cancel=window.cancelAnimationFrame.bind(window);
@@ -714,9 +717,9 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
       const legacy=await context.newPage();
       await legacy.addInitScript(value=>localStorage.setItem('hima-taizen-settings-v1',typeof value==='string'?value:JSON.stringify(value)),value);
       await legacy.goto(base);
-      assert.deepEqual(await legacy.evaluate(()=>reelGameKeys()),['dino','tetris','danmaku']);
+      assert.deepEqual(await legacy.evaluate(()=>reelGameKeys()),['dino','tetris','danmaku','ball']);
       if(value.slimeSide==='right')assert.equal(await legacy.locator('#reel-slime').getAttribute('data-side'),'right');
-      assert.equal(await legacy.locator('input[name=reel-game]:checked').count(),3);await legacy.close();
+      assert.equal(await legacy.locator('input[name=reel-game]:checked').count(),4);await legacy.close();
     }
     await context.close();
   });
