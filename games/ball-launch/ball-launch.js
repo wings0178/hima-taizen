@@ -13,9 +13,10 @@ class BallLaunchGameScene extends GameScene {
     this.patternNames = ['ピラミッド', '壁', '交互積み', '橋', '塔'];
     this.patternIndex = -1;
     this.shotCount = 0;
+    this.roundNumber = 1;
   }
   showTitle() {
-    this.showUI(`<h2>${this.name}</h2><details class="game-help"><summary>操作方法</summary><p>画面下のボールを引っ張り、離して発射。下に長く引くほど強く飛びます。左右に引いて狙いを調整。<br>3球で積み木を崩します。積み方は毎回ランダムです。<br>キーボード：← → で狙い、Spaceを長押しして発射。P / Escで一時停止。</p></details><div class="btn-group"><button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button></div><details class="game-help ball-credits"><summary>素材・ライセンス</summary><p>効果音：<a href="https://kenney.nl/assets/impact-sounds" target="_blank" rel="noopener">Kenney Impact Sounds</a> / <a href="https://kenney.nl/assets/rpg-audio" target="_blank" rel="noopener">RPG Audio</a>（CC0）。3D描画：Three.js、物理演算：cannon-es（MIT）。</p></details>`);
+    this.showUI(`<h2>${this.name}</h2><details class="game-help"><summary>操作方法</summary><p>画面下のボールを引っ張り、離して発射。下に長く引くほど強く飛びます。左右に引いて狙いを調整。<br>球数は無制限。的の付いた積み木を全部倒すと、自動で次のラウンドへ進みます。倒した積み木は灰色になり、消えます。<br>キーボード：← → で狙い、Spaceを長押しして発射。P / Escで一時停止。</p></details><div class="btn-group"><button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button></div><details class="game-help ball-credits"><summary>素材・ライセンス</summary><p>効果音：<a href="https://kenney.nl/assets/impact-sounds" target="_blank" rel="noopener">Kenney Impact Sounds</a> / <a href="https://kenney.nl/assets/rpg-audio" target="_blank" rel="noopener">RPG Audio</a>（CC0）。3D描画：Three.js、物理演算：cannon-es（MIT）。</p></details>`);
   }
   ensureEngine() {
     if (this.renderer) return;
@@ -30,8 +31,16 @@ class BallLaunchGameScene extends GameScene {
     this.camera.lookAt(0, .6, 1.2);
     this.ballGeometry = new THREE.SphereGeometry(.32, 20, 14);
     this.ballMaterial = new THREE.MeshStandardMaterial({color:0xff5967, roughness:.28, metalness:.08});
-    this.blockGeometry = new THREE.BoxGeometry(1, 1, 1);
-    this.blockMaterials = [0xefb56d,0xe87c65,0x79b8b0,0x8f9fbf,0xf0d28a].map(color => new THREE.MeshStandardMaterial({color,roughness:.72}));
+    const shape=new THREE.Shape();shape.moveTo(-.46,-.46);shape.lineTo(.46,-.46);shape.lineTo(.46,.46);shape.lineTo(-.46,.46);shape.closePath();
+    this.blockGeometry=new THREE.ExtrudeGeometry(shape,{depth:.92,steps:1,bevelEnabled:true,bevelThickness:.04,bevelSize:.04,bevelSegments:3});
+    this.blockGeometry.translate(0,0,-.46);
+    this.blockMaterials = [0xff775a,0xffc857,0x3bd5bc,0x9c8ce5,0xff769e].map(color => new THREE.MeshStandardMaterial({color,roughness:.48}));
+    this.fallenMaterial=new THREE.MeshStandardMaterial({color:0x6f818b,roughness:1,transparent:true,opacity:.36,depthWrite:false});
+    this.edgeGeometry=new THREE.EdgesGeometry(this.blockGeometry,35);
+    this.edgeMaterial=new THREE.LineBasicMaterial({color:0xffecd0});
+    this.targetGeometry=new THREE.RingGeometry(.08,.155,24);
+    this.targetDotGeometry=new THREE.CircleGeometry(.04,16);
+    this.targetMaterial=new THREE.MeshBasicMaterial({color:0xfff9e7});
     this.staticMaterials = [];
     this.staticGeometry = [];
     this.renderer.domElement.addEventListener('webglcontextlost', e => {
@@ -49,7 +58,7 @@ class BallLaunchGameScene extends GameScene {
     canvas.width = 720; canvas.height = 900;
     try { this.ensureEngine(); if (this.engineLost) throw new Error('context lost'); }
     catch (_) { this.showEngineError(); return; }
-    this.resetRound();
+    this.roundNumber=1;this.resetRound();
     this.isActive = true;
     this.lastTime = performance.now();
     this.attachListeners(); this.syncSound(); this.draw();
@@ -57,6 +66,9 @@ class BallLaunchGameScene extends GameScene {
   }
   resetRound(forcedPattern) {
     const {THREE,CANNON} = Ball3D;
+    this.stopAudio();
+    const pointer=this.pointerId;this.cancel();
+    if(pointer!==undefined && pointer!==null && canvas.hasPointerCapture(pointer))canvas.releasePointerCapture(pointer);
     if (this.scene) {
       this.scene.traverse(object=>{if(object.isLight && object.shadow?.map)object.shadow.map.dispose();});
       for (const g of this.staticGeometry) g.dispose();
@@ -80,7 +92,7 @@ class BallLaunchGameScene extends GameScene {
     this.world.defaultContactMaterial.restitution = .08;
     this.world.defaultContactMaterial.contactEquationStiffness = 1e7;
     this.world.defaultContactMaterial.contactEquationRelaxation = 4;
-    this.blocks = []; this.balls = []; this.shotsLeft = 3; this.score = 0;
+    this.blocks = []; this.balls = []; this.score = 0;
     this.elapsed = 0; this.sinceShot = 0; this.hasFired = false; this.finishDelay = 0;
     this.aimX = 0; this.power = .68; this.drag = null; this.pointerId = null;
     this.keyCharge = null; this.keys.clear(); this.shotCount = 0;
@@ -125,9 +137,13 @@ class BallLaunchGameScene extends GameScene {
   block(x,y,z,w=.85,h=.85,d=.85,color=0) {
     const {THREE,CANNON}=Ball3D;
     const mesh=new THREE.Mesh(this.blockGeometry,this.blockMaterials[color%5]);mesh.scale.set(w,h,d);mesh.castShadow=true;mesh.receiveShadow=true;this.scene.add(mesh);
+    const edge=new THREE.LineSegments(this.edgeGeometry,this.edgeMaterial);mesh.add(edge);
+    const target=new THREE.Group();target.position.z=.505;target.scale.set(1/w,1/h,1/d);
+    target.add(new THREE.Mesh(this.targetGeometry,this.targetMaterial));
+    const dot=new THREE.Mesh(this.targetDotGeometry,this.targetMaterial);dot.position.z=.001;target.add(dot);mesh.add(target);
     const body=new CANNON.Body({mass:.75*w*h*d,shape:new CANNON.Box(new CANNON.Vec3(w/2,h/2,d/2)),position:new CANNON.Vec3(x,y,z),linearDamping:.06,angularDamping:.12,sleepSpeedLimit:.12,sleepTimeLimit:.5});
     body.addEventListener('collide', e=>this.impact(e,body,color));this.world.addBody(body);
-    this.blocks.push({mesh,body,fallen:false});
+    this.blocks.push({mesh,body,target,edge,fallen:false,removed:false,fallenAt:null});
   }
   buildPattern(index) {
     const base=.79;
@@ -147,15 +163,25 @@ class BallLaunchGameScene extends GameScene {
     return {x:aimX*5.7,y:3.1+power*2.35,z:-(12.6+power*6.2)};
   }
   fire() {
-    if(!this.isActive || this.isPaused || !this.shotsLeft || this.sinceShot<.45 && this.hasFired)return false;
+    if(!this.isActive || this.isPaused || this.score===this.blocks.length || this.sinceShot<.25 && this.hasFired)return false;
     const {THREE,CANNON}=Ball3D;
     const body=new CANNON.Body({mass:4.2,shape:new CANNON.Sphere(.32),position:new CANNON.Vec3(0,.85,6.8),linearDamping:.012,angularDamping:.05});
     const v=this.launchVelocity();body.velocity.set(v.x,v.y,v.z);
     body.addEventListener('collide', e=>this.impact(e,body,0));
-    const mesh=new THREE.Mesh(this.ballGeometry,this.ballMaterial);mesh.castShadow=true;this.scene.add(mesh);this.world.addBody(body);this.balls.push({mesh,body});
-    this.shotsLeft--;this.shotCount++;this.hasFired=true;this.sinceShot=0;
-    this.readyBall.visible=this.shotsLeft>0;this.playSound('launch',.48,1+Math.random()*.07);
+    const mesh=new THREE.Mesh(this.ballGeometry,this.ballMaterial);mesh.castShadow=true;this.scene.add(mesh);this.world.addBody(body);this.balls.push({mesh,body,born:this.elapsed});
+    while(this.balls.length>12)this.removeBall(this.balls.shift());
+    this.shotCount++;this.hasFired=true;this.sinceShot=0;
+    this.playSound('launch',.48,1+Math.random()*.07);
     return true;
+  }
+  removeBall(ball) {
+    this.scene.remove(ball.mesh);this.world.removeBody(ball.body);this.lastImpactBody.delete(ball.body.id);
+  }
+  markFallen(block) {
+    if(block.fallen)return;
+    block.fallen=true;block.fallenAt=this.elapsed;this.score++;
+    block.mesh.material=this.fallenMaterial;block.mesh.castShadow=false;
+    block.target.visible=false;block.edge.visible=false;
   }
   impact(event,body,color) {
     if(!this.hasFired || !this.isActive || this.isPaused)return;
@@ -166,7 +192,7 @@ class BallLaunchGameScene extends GameScene {
     this.playSound(name,Math.min(.47,.075+speed*.037),.91+Math.random()*.18);
   }
   pointerDown(e) {
-    if(!this.isActive || this.isPaused || !this.shotsLeft || !e.isPrimary || e.button!==0 || this.pointerId!==null)return;
+    if(!this.isActive || this.isPaused || this.finishDelay>0 || !e.isPrimary || e.button!==0 || this.pointerId!==null)return;
     const p=canvasPoint(e.clientX,e.clientY);if(!p?.inside)return;
     const origin=this.screenPoint(this.launchOrigin);
     // A generous launch region remains usable on a narrow screen.
@@ -231,14 +257,29 @@ class BallLaunchGameScene extends GameScene {
     if(this.keys.has('ArrowRight'))this.aimX=Math.min(1,this.aimX+dt*.65);
     if(this.keyCharge!==null)this.power=Math.max(.12,Math.min(1,(performance.now()-this.keyCharge)/850));
     this.world.step(1/120,dt,6);
+    this.balls=this.balls.filter(ball=>{
+      const p=ball.body.position;
+      if(this.elapsed-ball.born>8 || Math.abs(p.x)>18 || p.z<-24 || p.y<-8){this.removeBall(ball);return false;}
+      return true;
+    });
     if(this.hasFired){
       for(const block of this.blocks){
+        if(block.fallen){
+          if(!block.removed && this.elapsed-block.fallenAt>1){
+            block.removed=true;this.scene.remove(block.mesh);this.world.removeBody(block.body);this.lastImpactBody.delete(block.body.id);
+          }
+          continue;
+        }
         const p=block.body.position,initial=block.initial,q=block.body.quaternion,iq=block.initialQuaternion;
         const angle=2*Math.acos(Math.min(1,Math.abs(q.x*iq.x+q.y*iq.y+q.z*iq.z+q.w*iq.w)));
-        if(!block.fallen && (p.y<initial.y-.38 || Math.hypot(p.x-initial.x,p.z-initial.z)>.68 || angle>.75)){block.fallen=true;this.score++;}
+        if(p.y<initial.y-.38 || Math.hypot(p.x-initial.x,p.z-initial.z)>.68 || angle>.75)this.markFallen(block);
       }
       const done=this.score===this.blocks.length;
-      if(done || !this.shotsLeft && this.sinceShot>3.7){this.finishDelay+=dt;if(this.finishDelay>1.35)this.showResult();}
+      if(done){
+        if(this.finishDelay===0){this.cancel();this.keyCharge=null;this.playSound('plate',.26,1.35);}
+        this.finishDelay+=dt;
+        if(this.finishDelay>1){this.roundNumber++;this.resetRound();}
+      }
     }
   }
   screenPoint(vector) {
@@ -248,15 +289,17 @@ class BallLaunchGameScene extends GameScene {
     if(!this.renderer || !this.scene || this.engineLost)return;
     const {THREE}=Ball3D;
     for(const item of [...this.blocks,...this.balls]){item.mesh.position.copy(item.body.position);item.mesh.quaternion.copy(item.body.quaternion);}
-    const v=this.launchVelocity();this.trajectory.visible=this.shotsLeft>0;
+    const v=this.launchVelocity();this.trajectory.visible=this.finishDelay===0;this.readyBall.visible=this.finishDelay===0;
     this.trajectory.children.forEach((dot,i)=>{const t=(i+1)*.035;dot.position.set(v.x*t,.85+v.y*t-4.91*t*t,6.8+v.z*t);dot.visible=dot.position.y>.8 && dot.position.z>-3.4;});
     this.renderer.render(this.scene,this.camera);
     ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.drawImage(this.renderer.domElement,0,0,720,900);
     ctx.fillStyle='rgba(20,31,39,.9)';ctx.fillRect(0,0,720,82);
-    ctx.font='600 28px sans-serif';ctx.fillStyle='#fff0d8';ctx.textAlign='left';ctx.fillText(`倒した積み木 ${this.score} / ${this.blocks.length}`,28,36);
-    ctx.font='22px sans-serif';ctx.fillStyle='#c1d3da';ctx.fillText(this.patternNames[this.patternIndex],28,67);
-    ctx.textAlign='right';ctx.font='600 28px sans-serif';ctx.fillStyle='#ffbec4';ctx.fillText(`残り ${this.shotsLeft} 球`,692,42);
-    if(this.shotsLeft){
+    ctx.font='600 32px sans-serif';ctx.fillStyle='#fff0d8';ctx.textAlign='left';ctx.fillText(`残り ${this.blocks.length-this.score} 個`,28,36);
+    ctx.font='22px sans-serif';ctx.fillStyle='#c1d3da';ctx.fillText(`ラウンド ${this.roundNumber} · ${this.patternNames[this.patternIndex]}`,28,67);
+    ctx.textAlign='right';ctx.font='600 28px sans-serif';ctx.fillStyle='#ffbec4';ctx.fillText('球数 ∞',692,42);
+    if(this.finishDelay>0){
+      ctx.textAlign='center';ctx.font='700 54px sans-serif';ctx.fillStyle='#fff5d4';ctx.fillText('クリア！',360,185);
+    }else{
       const origin=this.screenPoint(this.launchOrigin);
       if(this.drag){
         const end={x:Math.max(40,Math.min(680,origin.x+this.drag.endX-this.drag.x)),y:Math.max(origin.y,Math.min(820,origin.y+this.drag.endY-this.drag.y))};
