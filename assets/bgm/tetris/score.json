@@ -1,0 +1,5095 @@
+{
+  "bpm": 150,
+  "beats": 128,
+  "key": "A minor",
+  "events": [
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 1,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 1.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 2.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 3.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 3.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 4.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 5.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 5.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 6.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 7.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 7.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 8.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 9.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 10.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 11.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 12.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 13.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 14.0,
+      "beats": 1.78
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 16.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "violin",
+      "midi": 77,
+      "beat": 17.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 81,
+      "beat": 18.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 79,
+      "beat": 19.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 77,
+      "beat": 19.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 20.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 21.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 22.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 23.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 23.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 24.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 25.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 25.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 26.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 27.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 28.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 29.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 30.0,
+      "beats": 1.78
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 32,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 32.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 33,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 33.025,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 33.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 33.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 34.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 34.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 35.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 35.025,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 35.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 35.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 36.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 69,
+      "beat": 36.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 37.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 69,
+      "beat": 37.025,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 37.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 37.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 38.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 38.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 39.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 39.025,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 39.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 39.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 40.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 40.025,
+      "beats": 1.23
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 41.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 41.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 42.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 42.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 43.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 43.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 44.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 44.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 45.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 69,
+      "beat": 45.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 46.0,
+      "beats": 1.78
+    },
+    {
+      "instrument": "flute",
+      "midi": 69,
+      "beat": 46.025,
+      "beats": 1.64
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 48.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 48.025,
+      "beats": 1.23
+    },
+    {
+      "instrument": "violin",
+      "midi": 77,
+      "beat": 49.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 77,
+      "beat": 49.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 81,
+      "beat": 50.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 81,
+      "beat": 50.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 79,
+      "beat": 51.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 79,
+      "beat": 51.025,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 77,
+      "beat": 51.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 77,
+      "beat": 51.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 52.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 52.025,
+      "beats": 1.23
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 53.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 53.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 54.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 54.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 55.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 55.025,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 55.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 55.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 56.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 56.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 57.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 57.025,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 57.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 57.525,
+      "beats": 0.41
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 58.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 58.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 59.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 59.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 60.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 60.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 61.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 69,
+      "beat": 61.025,
+      "beats": 0.82
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 62.0,
+      "beats": 1.78
+    },
+    {
+      "instrument": "flute",
+      "midi": 69,
+      "beat": 62.025,
+      "beats": 1.64
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 64,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 65,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 79,
+      "beat": 66,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 67,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 68,
+      "beats": 1.335
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 69.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 67,
+      "beat": 70.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 71.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 72.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 69,
+      "beat": 73.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 74.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 75.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 76.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 68,
+      "beat": 77.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 64,
+      "beat": 78.0,
+      "beats": 1.78
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 80.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 77,
+      "beat": 81.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 81,
+      "beat": 82.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 77,
+      "beat": 83.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 84.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 79,
+      "beat": 85.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 85.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 86.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 87.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 88.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 74,
+      "beat": 89.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 80,
+      "beat": 90.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 76,
+      "beat": 91.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 72,
+      "beat": 92.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 93.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 69,
+      "beat": 93.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "flute",
+      "midi": 68,
+      "beat": 94.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "flute",
+      "midi": 71,
+      "beat": 95.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 96,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 64,
+      "beat": 96.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 97,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 97.018,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 97.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 97.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 98.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 98.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 99.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 99.018,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 99.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 99.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 100.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 100.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 101.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 101.018,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 101.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 101.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 102.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 64,
+      "beat": 102.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 103.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 103.018,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 103.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 103.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 104.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 104.018,
+      "beats": 1.275
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 105.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 105.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 106.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 106.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 107.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 64,
+      "beat": 107.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 108.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 108.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 109.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 109.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 110.0,
+      "beats": 1.78
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 110.018,
+      "beats": 1.7
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 112.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 112.018,
+      "beats": 1.275
+    },
+    {
+      "instrument": "violin",
+      "midi": 77,
+      "beat": 113.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 65,
+      "beat": 113.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 81,
+      "beat": 114.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 69,
+      "beat": 114.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 79,
+      "beat": 115.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 67,
+      "beat": 115.018,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 77,
+      "beat": 115.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 65,
+      "beat": 115.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 116.0,
+      "beats": 1.335
+    },
+    {
+      "instrument": "horn",
+      "midi": 64,
+      "beat": 116.018,
+      "beats": 1.275
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 117.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 117.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 118.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 64,
+      "beat": 118.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 119.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 119.018,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 119.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 119.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 120.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 120.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 71,
+      "beat": 121.0,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 121.018,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 121.5,
+      "beats": 0.445
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 121.518,
+      "beats": 0.425
+    },
+    {
+      "instrument": "violin",
+      "midi": 74,
+      "beat": 122.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 122.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 76,
+      "beat": 123.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 64,
+      "beat": 123.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 72,
+      "beat": 124.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 124.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 125.0,
+      "beats": 0.89
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 125.018,
+      "beats": 0.85
+    },
+    {
+      "instrument": "violin",
+      "midi": 69,
+      "beat": 126.0,
+      "beats": 1.78
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 126.018,
+      "beats": 1.7
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 0,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 0,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 1,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 1,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 1,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 1,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 1,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 2,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 2,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 3,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 3,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 3,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 3,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 3,
+      "beats": 0.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 33,
+      "beat": 0,
+      "beats": 1.4
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 4,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 4,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 5,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 5,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 5,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 5,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 5,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 6,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 6,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 7,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 7,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 7,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 7,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 7,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 8,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 8,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 9,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 9,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 9,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 9,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 9,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 10,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 10,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 11,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 11,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 11,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 11,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 11,
+      "beats": 0.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 28,
+      "beat": 8,
+      "beats": 1.4
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 12,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 12,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 13,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 13,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 13,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 13,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 13,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 14,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 14,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 15,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 15,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 15,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 15,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 15,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 16,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 16,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 45,
+      "beat": 17,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 57,
+      "beat": 17,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 17,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 17,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 65,
+      "beat": 17,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 18,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 18,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 45,
+      "beat": 19,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 57,
+      "beat": 19,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 19,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 19,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 65,
+      "beat": 19,
+      "beats": 0.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 38,
+      "beat": 16,
+      "beats": 1.4
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 20,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 20,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 21,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 21,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 21,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 21,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 21,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 22,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 22,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 23,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 23,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 23,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 23,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 23,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 24,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 24,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 25,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 25,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 25,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 25,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 25,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 26,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 26,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 27,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 27,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 27,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 27,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 27,
+      "beats": 0.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 28,
+      "beat": 24,
+      "beats": 1.4
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 28,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 28,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 29,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 29,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 29,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 29,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 29,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 30,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 30,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 31,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 31,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 31,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 31,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 31,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 32,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 32,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 32.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 33,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 33,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 33,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 33,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 33,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 33.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 34,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 34,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 34.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 35,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 35,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 35,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 35,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 35,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 35.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 32,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 32,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 33,
+      "beat": 32,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 33,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 35,
+      "beats": 0.45
+    },
+    {
+      "instrument": "cymbal",
+      "midi": 0,
+      "beat": 32,
+      "beats": 3
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 36,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 36,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 36.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 37,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 37,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 37,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 37,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 37,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 37.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 38,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 38,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 38.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 39,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 39,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 39,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 39,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 39,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 39.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 36,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 36,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 37,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 39,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 40,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 40,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 68,
+      "beat": 40.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 41,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 41,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 41,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 41,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 41,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 41.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 42,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 42,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 42.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 43,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 43,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 43,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 43,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 43,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 43.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 56,
+      "beat": 40,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 40,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 28,
+      "beat": 40,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 41,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 43,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 44,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 44,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 44.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 45,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 45,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 45,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 45,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 45,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 45.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 46,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 46,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 46.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 47,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 47,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 47,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 47,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 47,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 47.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 44,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 44,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 45,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 47,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 48,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 48,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 48.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 45,
+      "beat": 49,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 57,
+      "beat": 49,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 49,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 49,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 65,
+      "beat": 49,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 74,
+      "beat": 49.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 50,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 50,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 77,
+      "beat": 50.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 45,
+      "beat": 51,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 57,
+      "beat": 51,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 51,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 51,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 65,
+      "beat": 51,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 74,
+      "beat": 51.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 48,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 48,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 38,
+      "beat": 48,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 49,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 51,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 52,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 52,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 52.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 53,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 53,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 53,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 53,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 53,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 53.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 54,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 54,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 54.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 55,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 55,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 55,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 55,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 55,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 55.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 52,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 52,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 53,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 55,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 56,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 56,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 68,
+      "beat": 56.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 57,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 57,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 57,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 57,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 57,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 57.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 58,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 58,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 58.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 59,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 59,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 59,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 59,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 59,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 59.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 56,
+      "beat": 56,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 56,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 28,
+      "beat": 56,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 57,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 59,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 60,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 60,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 60.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 61,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 61,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 61,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 61,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 61,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 61.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 62,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 62,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 62.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 63,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 63,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 63,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 63,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 63,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 63.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 60,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 60,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 61,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 63,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 36,
+      "beat": 64,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 48,
+      "beat": 64,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 43,
+      "beat": 65,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 55,
+      "beat": 65,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 55,
+      "beat": 65,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 65,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 65,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 36,
+      "beat": 66,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 48,
+      "beat": 66,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 43,
+      "beat": 67,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 55,
+      "beat": 67,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 55,
+      "beat": 67,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 67,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 67,
+      "beats": 0.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 55,
+      "beat": 64,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 64,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 36,
+      "beat": 64,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 65,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 67,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 31,
+      "beat": 68,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 43,
+      "beat": 68,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 69,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 69,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 55,
+      "beat": 69,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 69,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 69,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 31,
+      "beat": 70,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 43,
+      "beat": 70,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 71,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 71,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 55,
+      "beat": 71,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 71,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 71,
+      "beats": 0.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 55,
+      "beat": 68,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 68,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 69,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 71,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 72,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 72,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 73,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 73,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 73,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 73,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 73,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 74,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 74,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 75,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 75,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 75,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 75,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 75,
+      "beats": 0.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 72,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 72,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 33,
+      "beat": 72,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 73,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 75,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 76,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 76,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 77,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 77,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 77,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 77,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 77,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 78,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 78,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 79,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 79,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 79,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 79,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 79,
+      "beats": 0.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 56,
+      "beat": 76,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 76,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 77,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 79,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 80,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 80,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 45,
+      "beat": 81,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 57,
+      "beat": 81,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 81,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 81,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 65,
+      "beat": 81,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 82,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 82,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 45,
+      "beat": 83,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 57,
+      "beat": 83,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 83,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 83,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 65,
+      "beat": 83,
+      "beats": 0.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 80,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 80,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 38,
+      "beat": 80,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 81,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 83,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 36,
+      "beat": 84,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 48,
+      "beat": 84,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 43,
+      "beat": 85,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 55,
+      "beat": 85,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 55,
+      "beat": 85,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 85,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 85,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 36,
+      "beat": 86,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 48,
+      "beat": 86,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 43,
+      "beat": 87,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 55,
+      "beat": 87,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 55,
+      "beat": 87,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 87,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 87,
+      "beats": 0.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 55,
+      "beat": 84,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 84,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 85,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 87,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 88,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 88,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 89,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 89,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 89,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 89,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 89,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 90,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 90,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 91,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 91,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 91,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 91,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 91,
+      "beats": 0.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 56,
+      "beat": 88,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 88,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 28,
+      "beat": 88,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 89,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 91,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 92,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 92,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 93,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 93,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 93,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 93,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 93,
+      "beats": 0.6
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 94,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 94,
+      "beats": 0.58
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 95,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 95,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 95,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 95,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 95,
+      "beats": 0.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 56,
+      "beat": 92,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 92,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 93,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 95,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 96,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 96,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 96.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 97,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 97,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 97,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 97,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 97,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 97.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 98,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 98,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 98.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 99,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 99,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 99,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 99,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 99,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 99.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 96,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 96,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 33,
+      "beat": 96,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 97,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 99,
+      "beats": 0.45
+    },
+    {
+      "instrument": "cymbal",
+      "midi": 0,
+      "beat": 96,
+      "beats": 3
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 100,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 100,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 100.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 101,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 101,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 101,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 101,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 101,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 101.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 102,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 102,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 102.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 103,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 103,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 103,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 103,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 103,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 103.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 100,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 100,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 101,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 103,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 104,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 104,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 68,
+      "beat": 104.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 105,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 105,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 105,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 105,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 105,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 105.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 106,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 106,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 106.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 107,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 107,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 107,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 107,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 107,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 107.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 56,
+      "beat": 104,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 104,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 28,
+      "beat": 104,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 105,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 107,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 108,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 108,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 108.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 109,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 109,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 109,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 109,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 109,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 109.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 110,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 110,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 110.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 111,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 111,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 111,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 111,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 111,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 111.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 108,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 108,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 109,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 111,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 112,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 112,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 112.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 45,
+      "beat": 113,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 57,
+      "beat": 113,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 113,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 113,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 65,
+      "beat": 113,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 74,
+      "beat": 113.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 38,
+      "beat": 114,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 50,
+      "beat": 114,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 77,
+      "beat": 114.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 45,
+      "beat": 115,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 57,
+      "beat": 115,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 115,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 62,
+      "beat": 115,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 65,
+      "beat": 115,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 74,
+      "beat": 115.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 112,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 62,
+      "beat": 112,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 38,
+      "beat": 112,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 113,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 115,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 116,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 116,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 69,
+      "beat": 116.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 117,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 117,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 117,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 117,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 117,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 117.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 33,
+      "beat": 118,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 45,
+      "beat": 118,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 118.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 40,
+      "beat": 119,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 52,
+      "beat": 119,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 57,
+      "beat": 119,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 60,
+      "beat": 119,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 119,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 72,
+      "beat": 119.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 57,
+      "beat": 116,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 60,
+      "beat": 116,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 117,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 119,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 120,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 120,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 68,
+      "beat": 120.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 121,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 121,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 121,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 121,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 121,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 121.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 122,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 122,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 122.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 123,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 123,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 123,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 123,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 123,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 123.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 56,
+      "beat": 120,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 120,
+      "beats": 3.6
+    },
+    {
+      "instrument": "timpani",
+      "midi": 28,
+      "beat": 120,
+      "beats": 1.4
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 121,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 123,
+      "beats": 0.45
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 124,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 124,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 68,
+      "beat": 124.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 125,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 125,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 125,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 125,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 125,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 125.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 28,
+      "beat": 126,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 40,
+      "beat": 126,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 76,
+      "beat": 126.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "bass",
+      "midi": 35,
+      "beat": 127,
+      "beats": 0.72
+    },
+    {
+      "instrument": "cello",
+      "midi": 47,
+      "beat": 127,
+      "beats": 0.58
+    },
+    {
+      "instrument": "viola",
+      "midi": 56,
+      "beat": 127,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 59,
+      "beat": 127,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 64,
+      "beat": 127,
+      "beats": 0.6
+    },
+    {
+      "instrument": "viola",
+      "midi": 71,
+      "beat": 127.5,
+      "beats": 0.35
+    },
+    {
+      "instrument": "horn",
+      "midi": 56,
+      "beat": 124,
+      "beats": 3.6
+    },
+    {
+      "instrument": "horn",
+      "midi": 59,
+      "beat": 124,
+      "beats": 3.6
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 125,
+      "beats": 0.45
+    },
+    {
+      "instrument": "snare",
+      "midi": 0,
+      "beat": 127,
+      "beats": 0.45
+    },
+    {
+      "instrument": "timpani",
+      "midi": 40,
+      "beat": 126.0,
+      "beats": 0.4
+    },
+    {
+      "instrument": "timpani",
+      "midi": 40,
+      "beat": 126.5,
+      "beats": 0.4
+    },
+    {
+      "instrument": "timpani",
+      "midi": 40,
+      "beat": 127.0,
+      "beats": 0.4
+    },
+    {
+      "instrument": "timpani",
+      "midi": 40,
+      "beat": 127.5,
+      "beats": 0.4
+    }
+  ]
+}

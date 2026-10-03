@@ -72,7 +72,7 @@ async function touchDrag(page, selector, dx, dy, delay = 0, steps = 5) {
   await check('instructions are folded and open by click or keyboard in all games', async () => {
     for(const key of ['dino','tetris','danmaku']) {
       await page.locator(`[data-game=${key}]`).click();
-      const help = page.locator('.game-help');
+      const help = page.locator('.game-help').filter({has:page.locator('summary', {hasText:'操作方法'})});
       assert.equal(await help.getAttribute('open'),null);
       assert.equal(await help.locator('p').isVisible(),false);
       await help.locator('summary').click();

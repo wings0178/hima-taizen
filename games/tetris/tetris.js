@@ -1,6 +1,10 @@
 class TetrisGameScene extends GameScene {
   constructor() {
-    super('テトリス');
+    super('テトリス', {controls: ['sound']});
+    this.muted = false;
+    try { this.muted = localStorage.getItem('hima-tetris-muted') === 'true'; } catch (_) {}
+    this.audio = new TetrisAudio(this);
+    this.keepResultSound = false;
     this.recordType = 'desc'; // 追加
     this.scoreUnit = 'pt';    // 追加
     this.cols = 10; this.rows = 20; this.blockSize = 25;
@@ -69,11 +73,17 @@ class TetrisGameScene extends GameScene {
       <div class="btn-group">
         <button class="ui-btn btn-primary" onclick="currentScene.startGame()">ゲーム開始</button>
       </div>
+      <details class="game-help"><summary>音楽・効果音</summary>
+      <p>100ptでオーケストラ風BGMに切り替わります。<br>
+      BGM音源：<a href="https://fc.sitefactory.info/bgm.html" target="_blank" rel="noopener">FC音工場</a>「コロブチカ」。<br>
+      オーケストラ風編曲：本ゲーム用の独自編曲（原曲：ロシア民謡）。楽器音源：VSCO 2 CE（CC0）。<br>
+      効果音：<a href="https://kenney.nl/assets/digital-audio" target="_blank" rel="noopener">Kenney Digital Audio</a>（CC0）。</p></details>
       ${this.getRecordsHTML()}
     `);
   }
 
   attachListeners() {
+    this.syncSound();
     window.addEventListener('keydown', this.keydownHandler);
     this.touchTarget.addEventListener('touchstart', this.touchStartHandler, {passive: false});
     this.touchTarget.addEventListener('touchmove', this.touchMoveHandler, {passive: false});
@@ -83,6 +93,8 @@ class TetrisGameScene extends GameScene {
 
   startGame() {
     this.hideUI();
+    this.audio.reset();
+    this.audio.unlock();
     canvas.width = (this.cols + 8) * this.blockSize; 
     canvas.height = this.rows * this.blockSize;
     this.board = Array.from({length: this.rows}, () => Array(this.cols).fill(0));
@@ -100,11 +112,13 @@ class TetrisGameScene extends GameScene {
     this.attachListeners();
 
     this.spawnPiece();
+    this.audio.update();
     this.lastTime = performance.now();
     this.reqId = requestAnimationFrame((t) => this.loop(t));
   }
 
   showResult() {
+    this.keepResultSound = this.audio.finish();
     this.isGameOver = true;
     this.saveRecord(this.score); // 追加
     this.showUI(`
@@ -123,7 +137,34 @@ class TetrisGameScene extends GameScene {
   }
 
   stopGameLoop() {
+    if (this.keepResultSound) this.keepResultSound = false;
+    else this.audio.stop();
     super.stopGameLoop();
+  }
+
+
+  syncSound() {
+    const button = document.getElementById('sound-game');
+    if (!button || currentScene !== this) return;
+    const blocked = !this.muted && this.audio.context && this.audio.context.state !== 'running';
+    button.textContent = this.muted ? '音：OFF' : this.audio.failed ? '音：再試行' : blocked ? '音：再開' : '音：ON';
+    button.setAttribute('aria-pressed', String(!this.muted));
+    button.setAttribute('aria-label', this.muted ? 'BGM・効果音をオン' : this.audio.failed || blocked ? 'BGM・効果音を再開' : 'BGM・効果音をオフ');
+  }
+  toggleSound() {
+    if (!this.muted && (this.audio.failed || this.audio.context?.state !== 'running')) {
+      this.audio.unlock(); this.audio.update(); this.syncSound(); return;
+    }
+    this.muted = !this.muted;
+    try { localStorage.setItem('hima-tetris-muted', String(this.muted)); } catch (_) {}
+    if (this.muted) this.audio.stop();
+    else { this.audio.unlock(); this.audio.update(); }
+    this.syncSound();
+  }
+  movePiece(direction) {
+    if (this.collide(this.piece.x + direction, this.piece.y)) return;
+    this.piece.x += direction;
+    this.audio.play('move', .085);
   }
 
   removeListeners() { 
@@ -164,7 +205,6 @@ class TetrisGameScene extends GameScene {
     this.hasHeld = false; 
     
     if (this.collide()) { 
-      this.stopGameLoop(); 
       this.showResult(); 
     }
   }
@@ -181,10 +221,12 @@ class TetrisGameScene extends GameScene {
       this.spawnPiece(temp);
     }
     this.hasHeld = true;
+    this.audio.play('hold', .18);
     this.dropCounter = 0;
   }
 
   hardDrop() {
+    this.audio.play('drop', .22);
     while (!this.collide(this.piece.x, this.piece.y + 1)) {
       this.piece.y++;
     }
@@ -219,7 +261,7 @@ class TetrisGameScene extends GameScene {
     for(let i=0; i<offsets.length; i++) {
       if(!this.collide(this.piece.x + offsets[i], this.piece.y, newMatrix)) {
         this.piece.x += offsets[i];
-        this.piece.matrix = newMatrix; return;
+        this.piece.matrix = newMatrix; this.audio.play('rotate', .12); return;
       }
     }
   }
@@ -242,6 +284,8 @@ class TetrisGameScene extends GameScene {
     }
     if(linesCleared > 0) {
       this.score += [0, 10, 30, 60, 100][linesCleared];
+      this.audio.play(linesCleared === 4 ? 'tetris' : 'clear', .23);
+      this.audio.update();
       // スピードアップ処理を削除。常に同じ速度を維持。
     }
   }
@@ -250,6 +294,7 @@ class TetrisGameScene extends GameScene {
     if (!this.collide(this.piece.x, this.piece.y + 1)) {
       this.piece.y++;
     } else {
+      this.audio.play('lock', .17);
       this.merge(); this.sweep(); this.spawnPiece();
     }
     this.dropCounter = 0;
@@ -258,6 +303,9 @@ class TetrisGameScene extends GameScene {
   togglePause() {
     if (!this.isActive || this.isGameOver) return;
     super.togglePause();
+    if (this.isPaused) this.audio.stop();
+    else { this.audio.unlock(); this.audio.update(); }
+    this.syncSound();
   }
 
   handleInput(e) {
@@ -270,9 +318,10 @@ class TetrisGameScene extends GameScene {
     }
     
     if (this.isPaused) return;
+    this.audio.unlock();
 
-    if (e.code === 'ArrowLeft') { if (!this.collide(this.piece.x - 1, this.piece.y)) this.piece.x--; }
-    else if (e.code === 'ArrowRight') { if (!this.collide(this.piece.x + 1, this.piece.y)) this.piece.x++; }
+    if (e.code === 'ArrowLeft') { this.movePiece(-1); }
+    else if (e.code === 'ArrowRight') { this.movePiece(1); }
     else if (e.code === 'ArrowDown') { this.drop(); }
     else if (e.code === 'ArrowUp') { this.rotate(); }
     else if (e.code === 'Space') { this.hardDrop(); }
@@ -302,6 +351,7 @@ class TetrisGameScene extends GameScene {
 
     if (this.isPaused) return;
     if (reelMode && !point?.inside) return;
+    this.audio.unlock();
     e.preventDefault();
     this.gestureActive = true;
     this.touchId = e.touches[0].identifier;
@@ -340,10 +390,10 @@ class TetrisGameScene extends GameScene {
 
     if (this.touchAxis !== 'y') {
       if (dx > sensitivityX) {
-        if (!this.collide(this.piece.x + 1, this.piece.y)) this.piece.x++;
+        this.movePiece(1);
         this.lastTouchX = currentX;
       } else if (dx < -sensitivityX) {
-        if (!this.collide(this.piece.x - 1, this.piece.y)) this.piece.x--;
+        this.movePiece(-1);
         this.lastTouchX = currentX;
       }
     }
@@ -351,7 +401,9 @@ class TetrisGameScene extends GameScene {
     if (this.touchAxis === 'y' && dy > sensitivityY) {
       if (!this.collide(this.piece.x, this.piece.y + 1)) {
         this.piece.y++;
-        this.score += 1; 
+        this.score += 1;
+        this.audio.play('move', .06);
+        this.audio.update();
       }
       this.lastTouchY = currentY;
     }
@@ -392,6 +444,7 @@ class TetrisGameScene extends GameScene {
 
   loop(time = 0) {
     if (!this.isActive || this.isPaused || this.isGameOver) return;
+    this.audio.update();
     const deltaTime = Math.min(time - this.lastTime, 100); this.lastTime = time;
     this.dropCounter += deltaTime;
     if (this.dropCounter > this.dropInterval) this.drop();
